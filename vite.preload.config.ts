@@ -1,10 +1,11 @@
 import autoprefixer from 'autoprefixer';
+import react from '@vitejs/plugin-react';
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig, mergeConfig } from 'vite';
 import { getBuildConfig, external, pluginHotRestart } from './vite.base.config';
 
 // https://vitejs.dev/config
-export default defineConfig((env) => {
+export default defineConfig(env => {
   const forgeEnv = env as ConfigEnv<'build'>;
   const { forgeConfigSelf } = forgeEnv;
   const config: UserConfig = {
@@ -28,7 +29,7 @@ export default defineConfig((env) => {
         plugins: [autoprefixer],
       },
     },
-    plugins: [pluginHotRestart('reload')],
+    plugins: [pluginHotRestart('reload'), react()],
   };
 
   return mergeConfig(getBuildConfig(forgeEnv), config);
