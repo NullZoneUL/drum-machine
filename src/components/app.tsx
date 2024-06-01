@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import './style.scss';
 
 const App = () => {
   useEffect(() => {
