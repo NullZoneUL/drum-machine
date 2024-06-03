@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import ButtonRollContainer from '@components/button-roll';
 import './style.scss';
 
 const App = () => {
@@ -6,7 +7,11 @@ const App = () => {
     console.log('Loaded!!');
   }, []);
 
-  return <div>Testing</div>;
+  return (
+    <div className="drum-machine-container">
+      <ButtonRollContainer />
+    </div>
+  );
 };
 
 export default App;

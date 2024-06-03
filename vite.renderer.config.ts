@@ -1,4 +1,5 @@
 import autoprefixer from 'autoprefixer';
+import path from 'path';
 import react from '@vitejs/plugin-react';
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig } from 'vite';
@@ -25,6 +26,10 @@ export default defineConfig(env => {
     plugins: [pluginExposeRenderer(name), react()],
     resolve: {
       preserveSymlinks: true,
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+        '@components': path.resolve(__dirname, './src/components'),
+      },
     },
     clearScreen: false,
   } as UserConfig;

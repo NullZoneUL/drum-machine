@@ -1,4 +1,5 @@
 import autoprefixer from 'autoprefixer';
+import path from 'path';
 import react from '@vitejs/plugin-react';
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig, mergeConfig } from 'vite';
@@ -30,6 +31,12 @@ export default defineConfig(env => {
       },
     },
     plugins: [pluginHotRestart('reload'), react()],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+        '@components': path.resolve(__dirname, './src/components'),
+      },
+    },
   };
 
   return mergeConfig(getBuildConfig(forgeEnv), config);
