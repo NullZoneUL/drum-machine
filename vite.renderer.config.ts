@@ -30,6 +30,7 @@ export default defineConfig(env => {
         '@': path.resolve(__dirname, './src'),
         '@components': path.resolve(__dirname, './src/components'),
         '@elements': path.resolve(__dirname, './src/elements'),
+        '@assets': path.resolve(__dirname, './src/assets'),
       },
     },
     clearScreen: false,

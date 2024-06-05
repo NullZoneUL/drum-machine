@@ -6,11 +6,9 @@ const NUM_BUTTONS = 16;
 const ButtonRollContainer = () => {
   return (
     <div className="button-roll-container">
-      <div className="buttons-section">
-        {[...Array(NUM_BUTTONS)].map((x, i) => (
-          <ButtonRoll number={i + 1} key={`BUTTON_ROLL_${i}`} />
-        ))}
-      </div>
+      {[...Array(NUM_BUTTONS)].map((x, i) => (
+        <ButtonRoll number={i + 1} key={`BUTTON_ROLL_${i}`} />
+      ))}
     </div>
   );
 };

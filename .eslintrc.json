@@ -23,7 +23,8 @@
         "map": [
           ["@", "./src"],
           ["@components", "./src/components"],
-          ["@elements", "./src/elements"]
+          ["@elements", "./src/elements"],
+          ["@assets", "./src/assets"]
         ],
         "extensions": [".ts", ".js", ".tsx", ".json"]
       }
