@@ -6,7 +6,11 @@ interface ButtonRollProps {
 }
 
 const ButtonRoll = ({ number }: ButtonRollProps) => {
-  return <button className="button-roll">{number}</button>;
+  return (
+    <button className="button-roll">
+      <div className="button-roll-container">{number}</div>
+    </button>
+  );
 };
 
 export default ButtonRoll;

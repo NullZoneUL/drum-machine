@@ -1,2 +1,35 @@
+@use 'sass:math';
+
+$buttonSize: 7%;
+$borderRadious: 5px;
+
 .button-roll {
+  width: $buttonSize;
+  height: 0;
+  padding: 0;
+  padding-bottom: $buttonSize;
+  margin: 5px math.div((12.5% - $buttonSize), 2);
+  border-radius: $borderRadious;
+  background-color: var(--dm-container);
+  color: var(--dm-white);
+  position: relative;
+  cursor: pointer;
+
+  .button-roll-container {
+    margin-top: 50%;
+    transform: translateY(-36%);
+  }
+
+  &::before {
+    width: 70%;
+    height: 0;
+    content: '';
+    display: block;
+    padding-bottom: 70%;
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    border: 2px solid var(--dm-white);
+    border-radius: $borderRadious;
+  }
 }
