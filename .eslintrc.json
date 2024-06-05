@@ -22,7 +22,8 @@
       "alias": {
         "map": [
           ["@", "./src"],
-          ["@components", "./src/components"]
+          ["@components", "./src/components"],
+          ["@elements", "./src/elements"]
         ],
         "extensions": [".ts", ".js", ".tsx", ".json"]
       }

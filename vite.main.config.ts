@@ -39,6 +39,7 @@ export default defineConfig(env => {
       alias: {
         '@': path.resolve(__dirname, './src'),
         '@components': path.resolve(__dirname, './src/components'),
+        '@elements': path.resolve(__dirname, './src/elements'),
       },
     },
   };

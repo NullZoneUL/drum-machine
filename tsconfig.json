@@ -14,7 +14,8 @@
     "jsx": "react",
     "paths": {
       "@/*": ["src/*"],
-      "@components/*": ["src/components/*"]
+      "@components/*": ["src/components/*"],
+      "@elements/*": ["src/elements/*"]
     }
   },
   "filesGlob": [
