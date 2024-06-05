@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ButtonRollContainer from '@components/button-roll';
+import ButtonRollContainer from '@/components/button-roll-section';
 import './style.scss';
 
 const App = () => {
