@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import ButtonRollContainer from '@/components/button-roll-section';
+import ButtonRollContainer from '@components/button-roll-section';
+import MainControlsContainer from '@components/main-controls';
 import './style.scss';
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
 
   return (
     <div className="drum-machine-container">
+      <MainControlsContainer />
       <ButtonRollContainer />
     </div>
   );
