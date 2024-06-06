@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Arrow from '@assets/images/arrow.webp';
+import { checkMinMaxValue } from './utils';
+import './style.scss';
 
 interface DMNumSelectorProps {
   onChange: (value: number) => void;
   defaultValue?: number;
   minValue?: number;
   maxValue?: number;
+  className?: string;
 }
 
 const START_MOUSE_DOWN_TIMEOUT = 500;
@@ -16,13 +19,16 @@ const NumSelector = ({
   defaultValue,
   minValue,
   maxValue,
+  className,
 }: DMNumSelectorProps) => {
   const [value, setValue] = useState(defaultValue);
   const changeValueTimeout = useRef<number>();
 
   //mode = true -> value++ ||| mode = false -> value--
   const setNewValue = (mode: boolean) => {
-    setValue(value => (mode ? value + 1 : value - 1));
+    setValue(value =>
+      checkMinMaxValue(mode ? value + 1 : value - 1, minValue, maxValue),
+    );
   };
 
   const mouseDownStart = (mode: boolean) => {
@@ -55,7 +61,7 @@ const NumSelector = ({
   }, []);
 
   return (
-    <div className="num-selector">
+    <div className={`num-selector ${className}`}>
       <div className="num-selector-value">
         <span>{value}</span>
       </div>

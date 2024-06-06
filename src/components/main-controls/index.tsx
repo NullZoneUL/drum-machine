@@ -8,7 +8,9 @@ const MainControlsContainer = () => {
       <NumSelector
         defaultValue={120}
         minValue={1}
+        maxValue={300}
         onChange={value => console.log(value)}
+        className="main-timer"
       />
     </div>
   );
