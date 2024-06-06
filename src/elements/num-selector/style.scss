@@ -1,0 +1,48 @@
+$buttonSize: 20px;
+
+.num-selector {
+  font-family: 'Tiny5', sans-serif;
+  background-color: var(--dm-black);
+  display: inline-block;
+
+  .num-selector-value {
+    display: inline-block;
+    color: var(--dm-yellow);
+    font-size: 1.6em;
+    vertical-align: middle;
+    margin-right: 10px;
+    padding-left: 5px;
+    width: 39px;
+  }
+
+  .num-selector-actions {
+    display: inline-block;
+    vertical-align: middle;
+
+    & button {
+      background-color: transparent;
+      width: $buttonSize;
+      height: $buttonSize;
+      padding: 0;
+      border-width: 0;
+      display: block;
+      cursor: pointer;
+
+      &:first-child {
+        transform: rotate(180deg);
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &:active {
+        opacity: 0.5;
+      }
+
+      & > img {
+        filter: invert(100%);
+      }
+    }
+  }
+}
