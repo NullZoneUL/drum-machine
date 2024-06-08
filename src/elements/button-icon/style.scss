@@ -1,0 +1,12 @@
+.dm-button {
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  background-color: var(--dm-container);
+  margin-right: 5px;
+
+  & > img {
+    filter: invert(100%);
+    padding: 25%;
+  }
+}
