@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import NumSelector from '@elements/num-selector';
 import MainControlsLeftButtons from './left-buttons';
+import MainControlsRightSection from './right-section';
 import './style.scss';
 
 export enum PlayerStates {
@@ -38,6 +39,7 @@ const MainControlsContainer = () => {
         onClickPlayPause={onPlayPause}
         onClickStop={onStop}
       />
+      <MainControlsRightSection />
     </div>
   );
 };
