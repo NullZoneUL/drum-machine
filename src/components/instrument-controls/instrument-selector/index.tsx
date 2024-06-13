@@ -1,14 +1,19 @@
-import React from 'react';
-import ButtonText from '@elements/button-text';
+import React, { useCallback } from 'react';
+import InputFile from '@elements/input-file';
 import Translation from '@assets/literals/literals';
 import './style.scss';
 
 const InstrumentSelectorContainer = () => {
+  const onFileSelected = useCallback((file: File) => {
+    console.log('TODO!!', file);
+  }, []);
+
   return (
     <div className="instrument-selector-container">
-      <ButtonText
+      <InputFile
         text={Translation.add_instrument}
-        onClick={() => console.log('Todo!!')}
+        accept="audio/mpeg, audio/wav, audio/ogg"
+        callback={onFileSelected}
       />
     </div>
   );
