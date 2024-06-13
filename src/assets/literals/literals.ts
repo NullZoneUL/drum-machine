@@ -1,13 +1,13 @@
-import es from './files/es.json';
+import es from './files/en.json';
 
 const getLiteralsByLang = (lang: string) => {
   switch (lang) {
-    case 'es':
+    case 'en':
     default:
       return es;
   }
 };
 
-const Translation = getLiteralsByLang('es');
+const Translation = getLiteralsByLang('en');
 
 export default Translation;

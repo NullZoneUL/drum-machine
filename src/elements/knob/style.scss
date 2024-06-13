@@ -1,0 +1,15 @@
+.dm-input-knob {
+  font-family: 'Tiny5', sans-serif;
+  color: var(--dm-white);
+  font-size: 0.8em;
+
+  & > input {
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.75);
+    border-radius: 50%;
+    outline: none;
+  }
+
+  & > p {
+    margin-top: 2px;
+  }
+}
