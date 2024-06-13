@@ -1,4 +1,10 @@
 .instrument-selector-container {
   display: inline-block;
   vertical-align: top;
+  width: 15%;
+
+  .dm-select {
+    width: 118px;
+    margin-top: 10px;
+  }
 }
