@@ -12,9 +12,13 @@ import './style.scss';
 export const InstrumentsContext = createContext<{
   instruments: File[];
   addInstrument: (instrument: File) => void;
+  deleteInstrument: (index: number) => void;
 }>({
   instruments: [],
   addInstrument: () => {
+    /**/
+  },
+  deleteInstrument: () => {
     /**/
   },
 });
@@ -35,8 +39,16 @@ const App = () => {
     setInstrument([...instrumentsRef.current, instrument]);
   }, []);
 
+  const deleteInstrument = useCallback((index: number) => {
+    const newInstrumentsArray = [...instrumentsRef.current];
+    newInstrumentsArray.splice(index, 1);
+    setInstrument(newInstrumentsArray);
+  }, []);
+
   return (
-    <InstrumentsContext.Provider value={{ instruments, addInstrument }}>
+    <InstrumentsContext.Provider
+      value={{ instruments, addInstrument, deleteInstrument }}
+    >
       <div className="drum-machine-container">
         <MainControlsContainer />
         <InstrumentControlsContainer />

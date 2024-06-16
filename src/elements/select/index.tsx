@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './style.scss';
 
 interface DMSelectItemProps {
@@ -14,10 +14,17 @@ interface DMSelectProps {
 }
 
 const DMSelect = ({ id, items, onChange, className = '' }: DMSelectProps) => {
+  const selectRef = useRef<HTMLSelectElement>();
+
+  useEffect(() => {
+    onChange(selectRef.current.selectedIndex);
+  }, [items]);
+
   return (
     <select
       onChange={event => onChange(event.target.selectedIndex)}
       className={`dm-select ${className}`}
+      ref={selectRef}
     >
       {items?.map((item, index) => (
         <option key={`DM_SELECT_${id}_${index}`} selected={item.selected}>
