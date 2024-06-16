@@ -21,7 +21,7 @@ const NumSelector = ({
   maxValue,
   className,
 }: DMNumSelectorProps) => {
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue || maxValue || minValue || 0);
   const changeValueTimeout = useRef<number>();
 
   //mode = true -> value++ ||| mode = false -> value--

@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
 import ButtonRoll from '@elements/button-roll';
+import { TICKS_BY_PAGE } from '@/utils/default_values';
 import './style.scss';
-
-const NUM_BUTTONS = 16;
 
 const ButtonRollContainer = () => {
   const onButtonRollClicked = useCallback((index: number) => {
@@ -11,7 +10,7 @@ const ButtonRollContainer = () => {
 
   return (
     <div className="buttons-roll-container">
-      {[...Array(NUM_BUTTONS)].map((x, i) => (
+      {[...Array(TICKS_BY_PAGE)].map((x, i) => (
         <ButtonRoll
           number={i + 1}
           key={`BUTTON_ROLL_${i}`}

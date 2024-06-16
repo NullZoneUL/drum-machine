@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import DMSelect from '@elements/select';
 import DMKnob from '@elements/knob';
 import Translation from '@assets/literals/literals';
@@ -6,12 +6,16 @@ import { numPages } from '@/utils/pages';
 import './style.scss';
 
 const MainControlsRightSection = () => {
+  const onNumPagesChange_ = useCallback((index: number) => {
+    //onNumPagesChange(index + 1);
+  }, []);
+
   return (
     <div className="main-controls-right-section">
       <DMSelect
         id="MAIN_PAGE_SELECTOR"
         items={numPages}
-        onChange={(index: number) => console.log(`TODO!!! Index: ${index}`)}
+        onChange={onNumPagesChange_}
         className="main-controls-num-pages"
       />
       <DMKnob
