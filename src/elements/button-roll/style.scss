@@ -4,6 +4,7 @@ $buttonSize: 7%;
 $borderRadious: 5px;
 
 .button-roll {
+  font-family: 'Tiny5', sans-serif;
   width: $buttonSize;
   height: 0;
   padding: 0;
@@ -20,7 +21,7 @@ $borderRadious: 5px;
     transform: translateY(-36%);
   }
 
-  &::before {
+  &.button-roll-selected::before {
     width: 70%;
     height: 0;
     content: '';
