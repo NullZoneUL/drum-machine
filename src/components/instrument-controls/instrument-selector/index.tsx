@@ -24,8 +24,9 @@ const InstrumentSelectorContainer = () => {
   const instrumentList = useMemo(() => {
     return instruments.instruments.length > 0
       ? instruments.instruments.map(item => {
+          const nameLastDot = item.name.lastIndexOf('.');
           return {
-            name: item.name,
+            name: item.name.substring(0, nameLastDot),
           };
         })
       : noItemsList;
