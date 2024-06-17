@@ -21,7 +21,7 @@ const NumSelector = ({
   maxValue,
   className,
 }: DMNumSelectorProps) => {
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue || maxValue || minValue || 0);
   const changeValueTimeout = useRef<number>();
 
   //mode = true -> value++ ||| mode = false -> value--
@@ -49,6 +49,12 @@ const NumSelector = ({
   const clearChangeValueTimeout = () => {
     window.clearTimeout(changeValueTimeout.current);
   };
+
+  useEffect(() => {
+    setValue(value => {
+      return value < minValue ? minValue : value > maxValue ? maxValue : value;
+    });
+  }, [minValue, maxValue]);
 
   useEffect(() => {
     onChange(value);
