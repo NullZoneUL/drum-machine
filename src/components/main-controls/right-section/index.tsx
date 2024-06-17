@@ -4,11 +4,14 @@ import DMKnob from '@elements/knob';
 import Translation from '@assets/literals/literals';
 import { numPages } from '@/utils/pages';
 import { publishEvent, CustomEventNames } from '@/utils/event';
+import { setNumPages } from '@/utils/tick-system';
 import './style.scss';
 
 const MainControlsRightSection = () => {
   const onNumPagesChange_ = useCallback((index: number) => {
-    publishEvent(CustomEventNames.mainPages, index + 1);
+    const numPages = index + 1;
+    setNumPages(numPages);
+    publishEvent(CustomEventNames.mainPages, numPages);
   }, []);
 
   return (
