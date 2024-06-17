@@ -1,4 +1,4 @@
-export const noItemsList = [{ name: '<none>' }];
+export const noItemsList = { itemValues: ['<none>'] };
 
 export const TICKS_BY_PAGE = 16;
 
