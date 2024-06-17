@@ -3,11 +3,12 @@ import DMSelect from '@elements/select';
 import DMKnob from '@elements/knob';
 import Translation from '@assets/literals/literals';
 import { numPages } from '@/utils/pages';
+import { publishEvent, CustomEventNames } from '@/utils/event';
 import './style.scss';
 
 const MainControlsRightSection = () => {
   const onNumPagesChange_ = useCallback((index: number) => {
-    //onNumPagesChange(index + 1);
+    publishEvent(CustomEventNames.mainPages, index + 1);
   }, []);
 
   return (

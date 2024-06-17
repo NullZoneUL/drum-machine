@@ -2,16 +2,17 @@ import React, { useCallback, useMemo } from 'react';
 import NumSelector from '@elements/num-selector';
 import ButtonText from '@elements/button-text';
 import Translation from '@assets/literals/literals';
-import { TICKS_BY_PAGE } from '@/utils/default_values';
+import { TICKS_BY_PAGE, DEFAULT_MAIN_PAGES } from '@/utils/default_values';
+import { CustomEventNames } from '@/utils/event';
+import { useEventListener } from '@/hooks/event-listener';
 import './style.scss';
 
-interface InstrumentPagesContainerProps {
-  mainNumPages: number;
-}
+const InstrumentPagesContainer = () => {
+  const mainNumPages = useEventListener(
+    CustomEventNames.mainPages,
+    DEFAULT_MAIN_PAGES,
+  );
 
-const InstrumentPagesContainer = ({
-  mainNumPages,
-}: InstrumentPagesContainerProps) => {
   const maxTicksValue = useMemo(
     () => TICKS_BY_PAGE * mainNumPages,
     [mainNumPages],

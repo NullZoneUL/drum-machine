@@ -9,7 +9,7 @@ const InstrumentControlsContainer = () => {
     <div className="instrument-controls-container">
       <InstrumentSelectorContainer />
       <ButtonRollContainer />
-      <InstrumentPagesContainer mainNumPages={4} />
+      <InstrumentPagesContainer />
     </div>
   );
 };

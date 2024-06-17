@@ -51,6 +51,12 @@ const NumSelector = ({
   };
 
   useEffect(() => {
+    setValue(value => {
+      return value < minValue ? minValue : value > maxValue ? maxValue : value;
+    });
+  }, [minValue, maxValue]);
+
+  useEffect(() => {
     onChange(value);
   }, [value]);
 
