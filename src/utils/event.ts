@@ -22,4 +22,6 @@ export const publishEvent = (
 
 export enum CustomEventNames {
   mainPages = 'mainPages',
+  systemTick = 'systemTick',
+  generalTick = 'generalTick',
 }
