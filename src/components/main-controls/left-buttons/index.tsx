@@ -1,9 +1,9 @@
 import React from 'react';
 import ButtonIcon from '@elements/button-icon';
+import MetronomeButton from '@components/metronome';
 import PlayIcon from '@assets/images/play.webp';
 import PauseIcon from '@assets/images/pause.webp';
 import StopIcon from '@assets/images/stop.webp';
-import MetronomeIcon from '@assets/images/metronome.webp';
 import { PlayerStates } from '..';
 import './style.scss';
 
@@ -25,10 +25,7 @@ const MainControlsLeftButtons = ({
         onClick={onClickPlayPause}
       />
       <ButtonIcon icon={StopIcon} onClick={onClickStop} />
-      <ButtonIcon
-        icon={MetronomeIcon}
-        onClick={() => console.log('Todo!!!!!')}
-      />
+      <MetronomeButton />
     </div>
   );
 };

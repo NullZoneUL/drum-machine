@@ -11,3 +11,5 @@ export const bpmValues = {
   min: 1,
   max: 300,
 };
+
+export const SUBTICKS_BY_TICK = 5;

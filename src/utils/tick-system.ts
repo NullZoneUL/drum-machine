@@ -1,4 +1,9 @@
-import { bpmValues, DEFAULT_MAIN_PAGES, TICKS_BY_PAGE } from './default_values';
+import {
+  bpmValues,
+  DEFAULT_MAIN_PAGES,
+  TICKS_BY_PAGE,
+  SUBTICKS_BY_TICK,
+} from './default_values';
 import { publishEvent, CustomEventNames } from './event';
 
 let bpm = bpmValues.default;
@@ -26,7 +31,7 @@ export const onPlay = () => {
   onPause();
 
   tickInterval = window.setInterval(() => {
-    if (tickNumber % 5 === 0) {
+    if (tickNumber % SUBTICKS_BY_TICK === 0) {
       if (tickNumber === ticksByLoop) {
         tickNumber = 0;
       }
@@ -55,13 +60,13 @@ export const onStop = () => {
 const getTimeByTick = () => {
   const quarterTime = 60000 / bpm;
   const quaverTime = quarterTime / 4;
-  const sectionTime = quaverTime / 5;
+  const sectionTime = quaverTime / SUBTICKS_BY_TICK;
   return sectionTime;
 };
 
 const getTicksByLoop = () => {
   const totalQuaverTicks = pages * TICKS_BY_PAGE;
-  const totalTicksBySection = totalQuaverTicks * 5;
+  const totalTicksBySection = totalQuaverTicks * SUBTICKS_BY_TICK;
   return totalTicksBySection;
 };
 
