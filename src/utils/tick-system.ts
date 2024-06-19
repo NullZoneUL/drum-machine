@@ -1,4 +1,5 @@
 import { bpmValues, DEFAULT_MAIN_PAGES, TICKS_BY_PAGE } from './default_values';
+import { publishEvent, CustomEventNames } from './event';
 
 let bpm = bpmValues.default;
 let pages = DEFAULT_MAIN_PAGES;
@@ -29,9 +30,9 @@ export const onPlay = () => {
       if (tickNumber === ticksByLoop) {
         tickNumber = 0;
       }
-      console.log('General tick event: ', tickNumber);
+      publishEvent(CustomEventNames.generalTick, tickNumber);
     }
-    console.log('Tick: ', tickNumber);
+    publishEvent(CustomEventNames.systemTick, tickNumber);
 
     tickNumber++;
 
