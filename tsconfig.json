@@ -13,10 +13,11 @@
     "resolveJsonModule": true,
     "jsx": "react",
     "paths": {
-      "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
       "@elements/*": ["src/elements/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@utils/*": ["src/utils/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   },
   "filesGlob": [

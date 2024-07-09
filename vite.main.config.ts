@@ -37,10 +37,11 @@ export default defineConfig(env => {
       // Load the Node.js entry.
       mainFields: ['module', 'jsnext:main', 'jsnext'],
       alias: {
-        '@': path.resolve(__dirname, './src'),
         '@components': path.resolve(__dirname, './src/components'),
         '@elements': path.resolve(__dirname, './src/elements'),
         '@assets': path.resolve(__dirname, './src/assets'),
+        '@utils': path.resolve(__dirname, './src/utils'),
+        '@hooks': path.resolve(__dirname, './src/hooks'),
       },
     },
   };
