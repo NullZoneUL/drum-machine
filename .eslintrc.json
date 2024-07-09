@@ -21,10 +21,11 @@
     "import/resolver": {
       "alias": {
         "map": [
-          ["@", "./src"],
           ["@components", "./src/components"],
           ["@elements", "./src/elements"],
-          ["@assets", "./src/assets"]
+          ["@assets", "./src/assets"],
+          ["@utils", "./src/utils"],
+          ["@hooks", "./src/hooks"]
         ],
         "extensions": [".ts", ".js", ".tsx", ".json"]
       }

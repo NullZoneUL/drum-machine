@@ -33,10 +33,11 @@ export default defineConfig(env => {
     plugins: [pluginHotRestart('reload'), react()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src'),
         '@components': path.resolve(__dirname, './src/components'),
         '@elements': path.resolve(__dirname, './src/elements'),
         '@assets': path.resolve(__dirname, './src/assets'),
+        '@utils': path.resolve(__dirname, './src/utils'),
+        '@hooks': path.resolve(__dirname, './src/hooks'),
       },
     },
   };

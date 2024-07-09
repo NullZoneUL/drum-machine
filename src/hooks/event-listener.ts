@@ -3,7 +3,7 @@ import {
   subscribeEvent,
   unsubscribeEvent,
   CustomEventNames,
-} from '@/utils/event';
+} from '@utils/event';
 
 export const useEventListener = (
   eventName: keyof typeof CustomEventNames,

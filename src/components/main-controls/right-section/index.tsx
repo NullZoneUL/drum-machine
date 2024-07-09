@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 import DMSelect from '@elements/select';
 import DMKnob from '@elements/knob';
 import Translation from '@assets/literals/literals';
-import { numPages } from '@/utils/pages';
-import { publishEvent, CustomEventNames } from '@/utils/event';
-import { setNumPages } from '@/utils/tick-system';
+import { numPages } from '@utils/pages';
+import { publishEvent, CustomEventNames } from '@utils/event';
+import { setNumPages } from '@utils/tick-system';
 import './style.scss';
 
 const MainControlsRightSection = () => {

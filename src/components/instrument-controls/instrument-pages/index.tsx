@@ -7,9 +7,9 @@ import {
   TICKS_BY_PAGE,
   DEFAULT_MAIN_PAGES,
   MAX_PAGES,
-} from '@/utils/default_values';
-import { CustomEventNames } from '@/utils/event';
-import { useEventListener } from '@/hooks/event-listener';
+} from '@utils/default_values';
+import { CustomEventNames } from '@utils/event';
+import { useEventListener } from '@hooks/event-listener';
 import './style.scss';
 
 const InstrumentPagesContainer = () => {

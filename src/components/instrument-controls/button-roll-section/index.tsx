@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import ButtonRoll from '@elements/button-roll';
-import { useEventListener } from '@/hooks/event-listener';
-import { TICKS_BY_PAGE } from '@/utils/default_values';
-import { CustomEventNames } from '@/utils/event';
+import { useEventListener } from '@hooks/event-listener';
+import { TICKS_BY_PAGE } from '@utils/default_values';
+import { CustomEventNames } from '@utils/event';
 import './style.scss';
 
 const ButtonRollContainer = () => {
