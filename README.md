@@ -7,6 +7,8 @@ Node version: **18.12.1**
 pnpm version: **8.15.6**
 <br>
 
+*Metronome sound by Druminfected*
+
 ⚠️ This project is under construction ⚠️
 
 ## **--- Init ---**
