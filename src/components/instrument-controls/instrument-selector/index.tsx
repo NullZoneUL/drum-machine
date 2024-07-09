@@ -36,7 +36,7 @@ const InstrumentSelectorContainer = () => {
     <div className="instrument-selector-container">
       <InputFile
         text={Translation.add}
-        accept="audio/mpeg, audio/wav, audio/ogg"
+        accept="audio/mpeg, audio/wav, audio/ogg, audio/mp4, audio/aac, audio/aacp, audio/webm, audio/flac"
         callback={onFileSelected}
         className="instrument-selector-add"
       />
