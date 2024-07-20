@@ -1,5 +1,4 @@
 {
-  "root": true,
   "env": {
     "browser": true,
     "es6": true,
@@ -18,11 +17,18 @@
   "parserOptions": {
     "project": ["./tsconfig.json"]
   },
-  "plugins": ["react-refresh"],
-  "rules": {
-    "react-refresh/only-export-components": [
-      "warn",
-      { "allowConstantExport": true }
-    ]
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@components", "./src/components"],
+          ["@elements", "./src/elements"],
+          ["@assets", "./src/assets"],
+          ["@utils", "./src/utils"],
+          ["@hooks", "./src/hooks"]
+        ],
+        "extensions": [".ts", ".js", ".tsx", ".json"]
+      }
+    }
   }
 }
