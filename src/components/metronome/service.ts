@@ -8,8 +8,7 @@ const QUARTER_TICK = 4 * SUBTICKS_BY_TICK;
 let playing = false;
 let preventDoubleSound = true;
 
-const audioManager = new AudioManager();
-audioManager.loadSound(metronomeSound);
+const audioManager = new AudioManager(metronomeSound);
 
 //TODO!!! Connect metronome volume with master volume param
 
