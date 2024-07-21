@@ -2,6 +2,7 @@ import React, { useId } from 'react';
 import './style.scss';
 
 //TODO!!! Add dots behavior getting current position, selected position, play status and bpm speed
+//TODO!!! Add tests
 interface LightDotIndicatorContainerProps {
   numLights: number;
 }
