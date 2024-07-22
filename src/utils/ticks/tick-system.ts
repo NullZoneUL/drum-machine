@@ -4,9 +4,9 @@ import {
   DEFAULT_MAIN_PAGES,
   TICKS_BY_PAGE,
   SUBTICKS_BY_TICK,
-} from './default_values';
+} from '../default_values';
 import { PlayerStates } from '@components/main-controls';
-import { publishEvent, CustomEventNames } from './event';
+import { publishEvent, CustomEventNames } from '../event';
 
 const tickWorker = new Worker(tickWorkerURL);
 

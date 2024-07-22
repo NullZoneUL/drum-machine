@@ -13,6 +13,7 @@ import { useEventListener } from '@hooks/event-listener';
 import './style.scss';
 
 const InstrumentPagesContainer = () => {
+  //TODO!!! Implement test...
   const mainNumPages = useEventListener(
     CustomEventNames.mainPages,
     DEFAULT_MAIN_PAGES,

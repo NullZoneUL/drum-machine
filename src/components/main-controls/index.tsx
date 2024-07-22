@@ -3,7 +3,7 @@ import NumSelector from '@elements/num-selector';
 import MainControlsLeftButtons from './left-buttons';
 import MainControlsRightSection from './right-section';
 import { bpmValues } from '@utils/default_values';
-import { setNewBPMs, onPlay, onPause, onStop } from '@utils/tick-system';
+import { setNewBPMs, onPlay, onPause, onStop } from '@utils/ticks/tick-system';
 import './style.scss';
 
 export enum PlayerStates {

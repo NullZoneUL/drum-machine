@@ -22,8 +22,8 @@ const DMKnob = ({
   const knobRef = useRef<HTMLInputElement>();
 
   useEffect(() => {
-    knobRef.current.addEventListener('input', event => {
-      onChange(parseInt(event.target.value));
+    knobRef.current.addEventListener('input', () => {
+      onChange(parseInt(knobRef.current.value));
     });
   }, []);
 
