@@ -3,14 +3,7 @@ import NumSelector, {
   START_MOUSE_DOWN_TIMEOUT,
   MOUSE_DOWN_TIMEOUT,
 } from '@elements/num-selector';
-//import Arrow from '@assets/images/arrow.webp';
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  act,
-} from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 
 jest.useFakeTimers();
 

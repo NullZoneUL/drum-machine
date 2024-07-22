@@ -6,6 +6,7 @@ import { CustomEventNames } from '@utils/event';
 import './style.scss';
 
 const ButtonRollContainer = () => {
+  //TODO!!! Implement tests...
   //Get general ticks
   const eventTick = useEventListener(CustomEventNames.generalTick, 0);
 
