@@ -15,7 +15,6 @@ let pages = DEFAULT_MAIN_PAGES;
 let timeByTick: number;
 let ticksByLoop: number;
 let playerState: PlayerStates;
-let numTicksSelector: number;
 
 export const setNewBPMs = (newValue: number) => {
   if (newValue >= bpmValues.min && newValue <= bpmValues.max) {
@@ -27,13 +26,7 @@ export const setNewBPMs = (newValue: number) => {
 
 export const setNumPages = (num: number) => {
   pages = num;
-  ticksByLoop = getTicksByLoop(numTicksSelector);
-  playerState === PlayerStates.PLAYING && onPlay();
-};
-
-export const setTicksByLoop = (numTicks: number) => {
-  numTicksSelector = numTicks;
-  ticksByLoop = getTicksByLoop(numTicks);
+  ticksByLoop = getTicksByLoop();
   playerState === PlayerStates.PLAYING && onPlay();
 };
 
@@ -73,14 +66,8 @@ const getTimeByTick = () => {
   return sectionTime;
 };
 
-const getTicksByLoop = (numTicks?: number) => {
-  const maxTicks = pages * TICKS_BY_PAGE;
-  const totalQuaverTicks =
-    typeof numTicks === 'number'
-      ? numTicks <= maxTicks
-        ? numTicks
-        : maxTicks
-      : maxTicks;
+const getTicksByLoop = () => {
+  const totalQuaverTicks = pages * TICKS_BY_PAGE;
   const totalTicksBySection = totalQuaverTicks * SUBTICKS_BY_TICK;
   return totalTicksBySection;
 };
