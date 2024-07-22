@@ -1,9 +1,7 @@
 import metronomeSound from '@assets/sounds/metronome-tick.mp3';
 import { subscribeEvent, CustomEventNames } from '@utils/event';
-import { SUBTICKS_BY_TICK } from '@utils/default_values';
+import { QUARTER_TICK } from '@utils/default_values';
 import { AudioManager } from '@utils/audio-manager';
-
-const QUARTER_TICK = 4 * SUBTICKS_BY_TICK;
 
 let playing = false;
 let preventDoubleSound = true;

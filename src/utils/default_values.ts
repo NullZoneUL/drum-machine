@@ -13,3 +13,5 @@ export const bpmValues = {
 };
 
 export const SUBTICKS_BY_TICK = 5;
+
+export const QUARTER_TICK = 4 * SUBTICKS_BY_TICK;
