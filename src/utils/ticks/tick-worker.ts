@@ -17,7 +17,7 @@ const tickWorker = () => {
       case 0: //Playing
         tickInterval = setInterval(() => {
           if (tickNumber % SUBTICKS_BY_TICK === 0) {
-            if (tickNumber === eventData.ticksByLoop) {
+            if (tickNumber >= eventData.ticksByLoop) {
               tickNumber = 0;
             }
             self.postMessage({ type: 'generalTick', number: tickNumber });

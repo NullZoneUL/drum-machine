@@ -14,44 +14,53 @@ let bpm = bpmValues.default;
 let pages = DEFAULT_MAIN_PAGES;
 let timeByTick: number;
 let ticksByLoop: number;
+let playerState: PlayerStates;
+let numTicksSelector: number;
 
 export const setNewBPMs = (newValue: number) => {
   if (newValue >= bpmValues.min && newValue <= bpmValues.max) {
     bpm = newValue;
     timeByTick = getTimeByTick();
-    onPlay();
+    playerState === PlayerStates.PLAYING && onPlay();
   }
 };
 
 export const setNumPages = (num: number) => {
   pages = num;
-  ticksByLoop = getTicksByLoop();
-  onPlay();
+  ticksByLoop = getTicksByLoop(numTicksSelector);
+  playerState === PlayerStates.PLAYING && onPlay();
 };
 
-//TODO!!! Add event calls
+export const setTicksByLoop = (numTicks: number) => {
+  numTicksSelector = numTicks;
+  ticksByLoop = getTicksByLoop(numTicks);
+  playerState === PlayerStates.PLAYING && onPlay();
+};
+
 export const onPlay = () => {
   onPause();
+  playerState = PlayerStates.PLAYING;
   tickWorker.postMessage({
-    action: PlayerStates.PLAYING,
+    action: playerState,
     timeByTick,
     ticksByLoop,
   });
 };
 
 export const onPause = () => {
+  playerState = PlayerStates.PAUSED;
   tickWorker.postMessage({
-    action: PlayerStates.PAUSED,
+    action: playerState,
     timeByTick,
     ticksByLoop,
   });
 };
 
 export const onStop = () => {
-  //TODO!!! Add reset event call
   onPause();
+  playerState = PlayerStates.STOPPED;
   tickWorker.postMessage({
-    action: PlayerStates.STOPPED,
+    action: playerState,
     timeByTick,
     ticksByLoop,
   });
@@ -64,8 +73,14 @@ const getTimeByTick = () => {
   return sectionTime;
 };
 
-const getTicksByLoop = () => {
-  const totalQuaverTicks = pages * TICKS_BY_PAGE;
+const getTicksByLoop = (numTicks?: number) => {
+  const maxTicks = pages * TICKS_BY_PAGE;
+  const totalQuaverTicks =
+    typeof numTicks === 'number'
+      ? numTicks <= maxTicks
+        ? numTicks
+        : maxTicks
+      : maxTicks;
   const totalTicksBySection = totalQuaverTicks * SUBTICKS_BY_TICK;
   return totalTicksBySection;
 };

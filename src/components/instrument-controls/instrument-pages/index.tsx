@@ -10,10 +10,11 @@ import {
 } from '@utils/default_values';
 import { CustomEventNames } from '@utils/event';
 import { useEventListener } from '@hooks/event-listener';
+import { setTicksByLoop } from '@utils/ticks/tick-system';
 import './style.scss';
 
 const InstrumentPagesContainer = () => {
-  //TODO!!! Implement test...
+  //TODO!!! Implement tests...
   const mainNumPages = useEventListener(
     CustomEventNames.mainPages,
     DEFAULT_MAIN_PAGES,
@@ -33,9 +34,7 @@ const InstrumentPagesContainer = () => {
       <div className="instrument-pages-container-center">
         <div className="instrument-ticks-length">
           <NumSelector
-            onChange={(value: number) =>
-              console.log(`TODO!!! Instrument pages value: ${value}`)
-            }
+            onChange={setTicksByLoop}
             minValue={1}
             maxValue={maxTicksValue}
             defaultValue={maxTicksValue}
