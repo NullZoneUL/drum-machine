@@ -6,11 +6,13 @@ import './style.scss';
 interface ButtonRollContainerProps {
   selectedPage: number;
   limitTicks: number;
+  tick: number;
 }
 
 const ButtonRollContainer = ({
   selectedPage,
   limitTicks,
+  tick,
 }: ButtonRollContainerProps) => {
   //TODO!!! Implement tests...
 
@@ -29,7 +31,7 @@ const ButtonRollContainer = ({
           number={i + 1}
           key={`BUTTON_ROLL_${i}`}
           selected={false}
-          playing={false}
+          playing={tick === firstPageTick + i}
           onClick={onButtonRollClicked}
           disabled={limitTicks < firstPageTick + i}
         />

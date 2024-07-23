@@ -73,12 +73,15 @@ const getTicksByLoop = () => {
 };
 
 tickWorker.onmessage = (
-  event: MessageEvent<{ type: string; number: number }>,
+  event: MessageEvent<{ type: string; number: number; play?: boolean }>,
 ) => {
   const eventData = event.data;
   switch (eventData.type) {
     case 'generalTick':
-      publishEvent(CustomEventNames.generalTick, eventData.number);
+      publishEvent(CustomEventNames.generalTick, {
+        tick: eventData.number,
+        play: eventData.play,
+      });
       break;
     case 'systemTick':
       publishEvent(CustomEventNames.systemTick, eventData.number);

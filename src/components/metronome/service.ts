@@ -19,12 +19,12 @@ export const stopMetronome = () => {
   playing = false;
 };
 
-const tickListener = (event: CustomEvent) => {
-  if (!playing) {
+const tickListener = (event: CustomEvent<{ tick: number; play: boolean }>) => {
+  if (!playing || !event.detail.play) {
     return;
   }
 
-  const tickNumber: number = event.detail;
+  const tickNumber: number = event.detail.tick;
 
   if (tickNumber % QUARTER_TICK === 0) {
     //If we start playing the sound by the first tick, it will sound twice, so we prevent the first tick to play
