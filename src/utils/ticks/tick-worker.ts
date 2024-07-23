@@ -20,7 +20,11 @@ const tickWorker = () => {
             if (tickNumber >= eventData.ticksByLoop) {
               tickNumber = 0;
             }
-            self.postMessage({ type: 'generalTick', number: tickNumber });
+            self.postMessage({
+              type: 'generalTick',
+              number: tickNumber,
+              play: true,
+            });
           }
           self.postMessage({ type: 'systemTick', number: tickNumber });
 
@@ -32,6 +36,11 @@ const tickWorker = () => {
         break;
       case 2: //Stopped
         tickNumber = 0;
+        self.postMessage({
+          type: 'generalTick',
+          number: tickNumber,
+          play: false,
+        });
         break;
     }
   };

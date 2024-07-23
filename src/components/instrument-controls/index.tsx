@@ -16,8 +16,8 @@ const InstrumentControlsContainer = () => {
   const limitTicksRef = useRef(limitTicks);
 
   useEffect(() => {
-    const eventListener = (data: { detail: any }) => {
-      const generalTick = data.detail;
+    const eventListener = (data: { detail: { tick: number } }) => {
+      const generalTick = data.detail.tick;
       setNewTick(tick => {
         if (generalTick === 0 || tick >= limitTicksRef.current) {
           return 0;
@@ -37,14 +37,13 @@ const InstrumentControlsContainer = () => {
     setLimitTicks(limitTicksRef.current);
   }, []);
 
-  //console.log(tick)
-
   return (
     <div className="instrument-controls-container">
       <InstrumentSelectorContainer />
       <ButtonRollContainer
         selectedPage={selectedPage}
         limitTicks={limitTicks}
+        tick={tick}
       />
       <InstrumentPagesContainer
         setTicksByLoop={setTicksByLoop}
