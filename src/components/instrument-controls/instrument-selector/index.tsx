@@ -9,9 +9,16 @@ import './style.scss';
 
 const INSTRUMENT_LIST = 'INSTRUMENT_LIST';
 
-const InstrumentSelectorContainer = () => {
+interface InstrumentSelectorContainerProps {
+  selectedInstrument: number;
+  setSelectedInstrument: (number: number) => void;
+}
+
+const InstrumentSelectorContainer = ({
+  selectedInstrument,
+  setSelectedInstrument,
+}: InstrumentSelectorContainerProps) => {
   const instruments = useContext(InstrumentsContext);
-  const [selectedInstrument, setSelectedInstrument] = useState(0);
 
   const onFileSelected = useCallback((file: File) => {
     instruments.addInstrument(file);
@@ -25,8 +32,8 @@ const InstrumentSelectorContainer = () => {
     return instruments.instruments.length > 0
       ? {
           itemValues: instruments.instruments.map(item => {
-            const nameLastDot = item.name.lastIndexOf('.');
-            return item.name.substring(0, nameLastDot);
+            const nameLastDot = item.file.name.lastIndexOf('.');
+            return item.file.name.substring(0, nameLastDot);
           }),
         }
       : noItemsList;

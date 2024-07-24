@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import InstrumentSelectorContainer from './instrument-selector';
 import ButtonRollContainer from './button-roll-section';
 import InstrumentPagesContainer from './instrument-pages';
@@ -7,13 +13,28 @@ import {
   unsubscribeEvent,
   CustomEventNames,
 } from '@utils/event';
+import { InstrumentsContext } from '@components/app';
 import './style.scss';
 
 const InstrumentControlsContainer = () => {
+  const { instruments } = useContext(InstrumentsContext);
   const [tick, setNewTick] = useState(-1);
   const [selectedPage, setSelectedPage] = useState(1);
+  const [selectedInstrument, setSelectedInstrument] = useState(0);
   const [limitTicks, setLimitTicks] = useState(0);
   const limitTicksRef = useRef(limitTicks);
+
+  useEffect(() => {
+    const selectedInstrument_ = instruments[selectedInstrument];
+    setLimitTicks(selectedInstrument_ ? selectedInstrument_.numTicks : 0);
+  }, [selectedInstrument]);
+
+  useEffect(() => {
+    limitTicksRef.current = limitTicks;
+    if (instruments[selectedInstrument]) {
+      instruments[selectedInstrument].numTicks = limitTicks;
+    }
+  }, [limitTicks]);
 
   useEffect(() => {
     const eventListener = (data: { detail: { tick: number } }) => {
@@ -33,22 +54,27 @@ const InstrumentControlsContainer = () => {
   }, []);
 
   const setTicksByLoop = useCallback((numTicks: number) => {
-    limitTicksRef.current = numTicks - 1;
-    setLimitTicks(limitTicksRef.current);
+    setLimitTicks(numTicks - 1);
   }, []);
 
   return (
     <div className="instrument-controls-container">
-      <InstrumentSelectorContainer />
+      <InstrumentSelectorContainer
+        setSelectedInstrument={setSelectedInstrument}
+        selectedInstrument={selectedInstrument}
+      />
       <ButtonRollContainer
         selectedPage={selectedPage}
         limitTicks={limitTicks}
         tick={tick}
       />
-      <InstrumentPagesContainer
-        setTicksByLoop={setTicksByLoop}
-        setSelectedPage={setSelectedPage}
-      />
+      {instruments.length > 0 && (
+        <InstrumentPagesContainer
+          setTicksByLoop={setTicksByLoop}
+          setSelectedPage={setSelectedPage}
+          instrument={instruments[selectedInstrument]}
+        />
+      )}
     </div>
   );
 };

@@ -1,38 +1,29 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import NumSelector from '@elements/num-selector';
 import ButtonText from '@elements/button-text';
 import LightDotIndicatorContainer from '@elements/light-dot-indicator';
 import Translation from '@assets/literals/literals';
-import {
-  TICKS_BY_PAGE,
-  DEFAULT_MAIN_PAGES,
-  MAX_PAGES,
-} from '@utils/default_values';
-import { CustomEventNames } from '@utils/event';
-import { useEventListener } from '@hooks/event-listener';
+import { MAX_PAGES } from '@utils/default_values';
+import { useTicksPagesListener } from '@hooks/ticks-pages';
 import './style.scss';
 
 interface InstrumentPagesContainerProps {
+  instrument: Instrument;
   setTicksByLoop: (numTicks: number) => void;
   setSelectedPage: (numPages: number) => void;
 }
 
 const InstrumentPagesContainer = ({
+  instrument,
   setTicksByLoop,
   setSelectedPage,
 }: InstrumentPagesContainerProps) => {
   //TODO!!! Implement tests...
-  const mainNumPages = useEventListener(
-    CustomEventNames.mainPages,
-    DEFAULT_MAIN_PAGES,
-  );
 
+  const { mainNumPages, maxTicksValue } = useTicksPagesListener();
   const [page, setPage] = useState(1);
-
-  const maxTicksValue = useMemo(
-    () => TICKS_BY_PAGE * mainNumPages,
-    [mainNumPages],
-  );
+  const [prevSelectedInstrument, setPrevSelectedInstrument] =
+    useState(instrument);
 
   const onPageSelect = useCallback(() => {
     setPage(page => {
@@ -51,8 +42,16 @@ const InstrumentPagesContainer = ({
   }, [mainNumPages]);
 
   useEffect(() => {
+    setPrevSelectedInstrument(instrument);
+  }, [instrument]);
+
+  useEffect(() => {
     setSelectedPage(page);
   }, [page]);
+
+  if (prevSelectedInstrument?.file !== instrument?.file) {
+    return <></>;
+  }
 
   return (
     <div className="instrument-pages-container">
@@ -62,7 +61,7 @@ const InstrumentPagesContainer = ({
             onChange={setTicksByLoop}
             minValue={1}
             maxValue={maxTicksValue}
-            defaultValue={maxTicksValue}
+            defaultValue={instrument.numTicks + 1}
           />
           <span>{maxTicksValue}</span>
         </div>
