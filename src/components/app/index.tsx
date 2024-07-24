@@ -7,10 +7,11 @@ import React, {
 } from 'react';
 import MainControlsContainer from '@components/main-controls';
 import InstrumentControlsContainer from '@components/instrument-controls';
+import { useTicksPagesListener } from '@hooks/ticks-pages';
 import './style.scss';
 
 export const InstrumentsContext = createContext<{
-  instruments: File[];
+  instruments: Instrument[];
   addInstrument: (instrument: File) => void;
   deleteInstrument: (index: number) => void;
 }>({
@@ -24,20 +25,32 @@ export const InstrumentsContext = createContext<{
 });
 
 const App = () => {
-  const [instruments, setInstrument] = useState<File[]>([]);
+  const { maxTicksValue } = useTicksPagesListener();
+  const [instruments, setInstrument] = useState<Instrument[]>([]);
   const instrumentsRef = useRef(instruments);
+  const maxTicksRef = useRef(maxTicksValue);
 
   useEffect(() => {
     instrumentsRef.current = instruments;
   }, [instruments]);
 
   useEffect(() => {
+    maxTicksRef.current = maxTicksValue - 1;
+  }, [maxTicksValue]);
+
+  useEffect(() => {
     console.log('Loaded!!');
   }, []);
 
-  const addInstrument = useCallback((instrument: File) => {
-    setInstrument([...instrumentsRef.current, instrument]);
-  }, []);
+  const addInstrument = useCallback(
+    (instrument: File) => {
+      setInstrument([
+        ...instrumentsRef.current,
+        { file: instrument, numTicks: maxTicksRef.current },
+      ]);
+    },
+    [maxTicksValue],
+  );
 
   const deleteInstrument = useCallback((index: number) => {
     const newInstrumentsArray = [...instrumentsRef.current];
