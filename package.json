@@ -1,7 +1,7 @@
 {
   "name": "drum-machine",
   "productName": "drum-machine",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "React and Electron Drum machine",
   "main": ".vite/build/main.js",
   "scripts": {
