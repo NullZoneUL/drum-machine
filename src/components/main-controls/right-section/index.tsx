@@ -24,6 +24,7 @@ const MainControlsRightSection = () => {
     instruments.forEach(item => {
       if (item.numTicks > mxTicksBy0) {
         item.numTicks = mxTicksBy0;
+        item.manager.setNewMaxNumTicks(mxTicksBy0);
       }
     });
   }, [maxTicksValue]);

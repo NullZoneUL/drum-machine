@@ -15,3 +15,7 @@ export const bpmValues = {
 export const SUBTICKS_BY_TICK = 5;
 
 export const QUARTER_TICK = 4 * SUBTICKS_BY_TICK;
+
+export const GENERAL_MAX_TICKS = TICKS_BY_PAGE * MAX_PAGES;
+
+export const SYSTEM_MAX_TICKS = GENERAL_MAX_TICKS * SUBTICKS_BY_TICK;
