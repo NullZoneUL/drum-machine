@@ -36,6 +36,10 @@ $borderRadious: 5px;
 
   &.button-roll-playing {
     color: var(--dm-red);
+
+    &.button-roll-selected::before {
+      border-color: var(--dm-red);
+    }
   }
 
   &:disabled {

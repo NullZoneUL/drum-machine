@@ -1,5 +1,9 @@
 import { AudioManager } from '@utils/audio-manager';
-import { subscribeEvent, CustomEventNames } from '@utils/event';
+import {
+  subscribeEvent,
+  unsubscribeEvent,
+  CustomEventNames,
+} from '@utils/event';
 import {
   SUBTICKS_BY_TICK,
   SYSTEM_MAX_TICKS,
@@ -21,27 +25,30 @@ export class InstrumentManager {
   #maxNumTicks: number;
   #tickPositions: Map<number, boolean>;
   #generalTickPositions: Map<number, boolean>;
+  #audioManager: AudioManager;
+  #tick = 0;
 
   constructor(file: File, numTicks: number) {
     this.setNewMaxNumTicks(numTicks);
     this.#tickPositions = createNewTickPositionsMap(SYSTEM_MAX_TICKS);
     this.#generalTickPositions = createNewTickPositionsMap(GENERAL_MAX_TICKS);
+    this.#audioManager = new AudioManager(file);
 
-    const audioManager = new AudioManager(file);
+    this.tickListener = this.tickListener.bind(this);
+    subscribeEvent(CustomEventNames.systemTick, this.tickListener);
+  }
 
-    let tick = 0;
-    subscribeEvent(CustomEventNames.systemTick, (data: CustomEvent<number>) => {
-      const tickNumber = data.detail;
-      if (tickNumber === 0 || tick >= this.#maxNumTicks) {
-        tick = 0;
-      } else {
-        tick++;
-      }
+  tickListener(data: CustomEvent<number>) {
+    const tickNumber = data.detail;
+    if (tickNumber === 0 || this.#tick >= this.#maxNumTicks) {
+      this.#tick = 0;
+    } else {
+      this.#tick++;
+    }
 
-      if (this.#tickPositions.get(tick)) {
-        audioManager.playSound();
-      }
-    });
+    if (this.#tickPositions.get(this.#tick)) {
+      this.#audioManager.playSound();
+    }
   }
 
   setNewMaxNumTicks(numTicks: number) {
@@ -66,5 +73,9 @@ export class InstrumentManager {
       ticksByPage.push(this.#generalTickPositions.get(i));
     }
     return ticksByPage;
+  }
+
+  cleanup() {
+    unsubscribeEvent(CustomEventNames.systemTick, this.tickListener);
   }
 }

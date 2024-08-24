@@ -58,6 +58,8 @@ const App = () => {
   );
 
   const deleteInstrument = useCallback((index: number) => {
+    instrumentsRef.current[index].manager.cleanup();
+
     const newInstrumentsArray = [...instrumentsRef.current];
     newInstrumentsArray.splice(index, 1);
     setInstrument(newInstrumentsArray);
