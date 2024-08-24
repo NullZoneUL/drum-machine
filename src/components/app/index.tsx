@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import MainControlsContainer from '@components/main-controls';
 import InstrumentControlsContainer from '@components/instrument-controls';
+import { InstrumentManager } from '@utils/instrument';
 import { useTicksPagesListener } from '@hooks/ticks-pages';
 import './style.scss';
 
@@ -46,13 +47,19 @@ const App = () => {
     (instrument: File) => {
       setInstrument([
         ...instrumentsRef.current,
-        { file: instrument, numTicks: maxTicksRef.current },
+        {
+          file: instrument,
+          numTicks: maxTicksRef.current,
+          manager: new InstrumentManager(instrument, maxTicksRef.current),
+        },
       ]);
     },
     [maxTicksValue],
   );
 
   const deleteInstrument = useCallback((index: number) => {
+    instrumentsRef.current[index].manager.cleanup();
+
     const newInstrumentsArray = [...instrumentsRef.current];
     newInstrumentsArray.splice(index, 1);
     setInstrument(newInstrumentsArray);

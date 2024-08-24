@@ -2,10 +2,17 @@ export class AudioManager {
   private audioContext: AudioContext;
   private sound: AudioBuffer;
 
-  constructor(url: string) {
+  constructor(sound: string | File) {
     this.audioContext = new AudioContext();
 
-    fetch(url).then(async (response: Response) => {
+    if (typeof sound !== 'string') {
+      sound.arrayBuffer().then(async (arrayBuffer: ArrayBuffer) => {
+        this.sound = await this.audioContext.decodeAudioData(arrayBuffer);
+      });
+      return;
+    }
+
+    fetch(sound).then(async (response: Response) => {
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sound = audioBuffer;

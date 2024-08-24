@@ -30,9 +30,16 @@ const InstrumentControlsContainer = () => {
   }, [selectedInstrument]);
 
   useEffect(() => {
+    instruments.length === 0 && setLimitTicks(0);
+  }, [instruments]);
+
+  useEffect(() => {
     limitTicksRef.current = limitTicks;
-    if (instruments[selectedInstrument]) {
-      instruments[selectedInstrument].numTicks = limitTicks;
+
+    const selectedInstrument_ = instruments[selectedInstrument];
+    if (selectedInstrument_) {
+      selectedInstrument_.numTicks = limitTicks;
+      selectedInstrument_.manager.setNewMaxNumTicks(limitTicks);
     }
   }, [limitTicks]);
 
@@ -67,6 +74,8 @@ const InstrumentControlsContainer = () => {
         selectedPage={selectedPage}
         limitTicks={limitTicks}
         tick={tick}
+        instruments={instruments}
+        selectedInstrument={selectedInstrument}
       />
       {instruments.length > 0 && (
         <InstrumentPagesContainer
