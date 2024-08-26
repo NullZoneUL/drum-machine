@@ -6,7 +6,9 @@ import { AudioManager } from '@utils/audio-manager';
 let playing = false;
 let preventDoubleSound = true;
 
-const audioManager = new AudioManager(metronomeSound);
+const audioManager = new AudioManager(metronomeSound, () =>
+  console.log("Metronome sound couldn't be loaded..."),
+);
 
 //TODO!!! Connect metronome volume with master volume param
 

@@ -28,11 +28,11 @@ export class InstrumentManager {
   #audioManager: AudioManager;
   #tick = 0;
 
-  constructor(file: File, numTicks: number) {
+  constructor(file: File, numTicks: number, onErrorCallback: () => void) {
     this.setNewMaxNumTicks(numTicks);
     this.#tickPositions = createNewTickPositionsMap(SYSTEM_MAX_TICKS);
     this.#generalTickPositions = createNewTickPositionsMap(GENERAL_MAX_TICKS);
-    this.#audioManager = new AudioManager(file);
+    this.#audioManager = new AudioManager(file, onErrorCallback);
 
     this.tickListener = this.tickListener.bind(this);
     subscribeEvent(CustomEventNames.systemTick, this.tickListener);

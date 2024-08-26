@@ -7,8 +7,12 @@ import React, {
 } from 'react';
 import MainControlsContainer from '@components/main-controls';
 import InstrumentControlsContainer from '@components/instrument-controls';
+import ModalService from '@elements/modal-service';
+import SimpleMessageModal from '@elements/modal-service/modals/simple-message';
+import Translation from '@assets/literals/literals';
 import { InstrumentManager } from '@utils/instrument';
 import { useTicksPagesListener } from '@hooks/ticks-pages';
+import { publishEvent, CustomEventNames } from '@utils/event';
 import './style.scss';
 
 export const InstrumentsContext = createContext<{
@@ -50,7 +54,20 @@ const App = () => {
         {
           file: instrument,
           numTicks: maxTicksRef.current,
-          manager: new InstrumentManager(instrument, maxTicksRef.current),
+          manager: new InstrumentManager(
+            instrument,
+            maxTicksRef.current,
+            () => {
+              //Delete the current audio if there is any error when trying to load it
+              publishEvent(
+                CustomEventNames.newModalEvent,
+                <SimpleMessageModal
+                  message={Translation.messages.errors.file_load}
+                />,
+              );
+              deleteInstrument(instrumentsRef.current.length - 1);
+            },
+          ),
         },
       ]);
     },
@@ -73,6 +90,7 @@ const App = () => {
         <MainControlsContainer />
         <InstrumentControlsContainer />
       </div>
+      <ModalService />
     </InstrumentsContext.Provider>
   );
 };
