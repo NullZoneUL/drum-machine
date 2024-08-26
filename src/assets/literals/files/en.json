@@ -3,5 +3,11 @@
   "volume": "Volume",
   "add": "Add",
   "delete": "Delete",
-  "page": "Page"
+  "page": "Page",
+  "accept": "Accept",
+  "messages": {
+    "errors": {
+      "file_load": "The selected file couldn't be loaded"
+    }
+  }
 }

@@ -24,4 +24,6 @@ export enum CustomEventNames {
   mainPages = 'mainPages',
   systemTick = 'systemTick',
   generalTick = 'generalTick',
+  newModalEvent = 'newModalEvent',
+  hideModalEvent = 'hideModalEvent',
 }
