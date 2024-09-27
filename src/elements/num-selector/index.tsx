@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Arrow from '@assets/images/arrow.webp';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { checkMinMaxValue } from './utils';
 import './style.scss';
 
@@ -62,9 +62,17 @@ const NumSelector = ({
   };
 
   useEffect(() => {
-    setValue(value =>
-      value < minValue ? minValue : value > maxValue ? maxValue : value,
-    );
+    setValue(value => {
+      if (minValue && value < minValue) {
+        return minValue;
+      }
+
+      if (maxValue && value > maxValue) {
+        return maxValue;
+      }
+
+      return value;
+    });
   }, [minValue, maxValue]);
 
   useEffect(() => {

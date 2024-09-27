@@ -1,4 +1,3 @@
-import React from 'react';
 import MetronomeButton from '@components/metronome';
 import { render, fireEvent } from '@testing-library/react';
 import { playMetronome, stopMetronome } from '@components/metronome/service';

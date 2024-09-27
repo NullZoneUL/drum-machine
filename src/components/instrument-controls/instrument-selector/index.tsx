@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
 import InputFile from '@elements/input-file';
 import Translation from '@assets/literals/literals';
 import DMSelect from '@elements/select';
 import ButtonText from '@elements/button-text';
+import { useCallback, useContext, useMemo } from 'react';
 import { noItemsList } from '@utils/default_values';
 import { InstrumentsContext } from '@components/app';
 import './style.scss';

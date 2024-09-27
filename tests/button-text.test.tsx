@@ -1,4 +1,3 @@
-import React from 'react';
 import ButtonText from '@elements/button-text';
 import { render, screen, fireEvent } from '@testing-library/react';
 

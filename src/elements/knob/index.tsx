@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
 import knob from '@assets/images/knob.webp';
+import { useEffect, useRef } from 'react';
 import './style.scss';
 
 interface DMKnobProps {
@@ -19,11 +19,11 @@ const DMKnob = ({
   max,
   title,
 }: DMKnobProps) => {
-  const knobRef = useRef<HTMLInputElement>();
+  const knobRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    knobRef.current.addEventListener('input', () => {
-      onChange(parseInt(knobRef.current.value));
+    knobRef.current?.addEventListener('input', () => {
+      onChange(parseInt(knobRef.current!.value));
     });
   }, []);
 

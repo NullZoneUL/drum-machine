@@ -22,10 +22,10 @@ const createNewTickPositionsMap = (maxTicks: number) => {
 };
 
 export class InstrumentManager {
-  #maxNumTicks: number;
   #tickPositions: Map<number, boolean>;
   #generalTickPositions: Map<number, boolean>;
   #audioManager: AudioManager;
+  #maxNumTicks = 0;
   #tick = 0;
 
   constructor(file: File, numTicks: number, onErrorCallback: () => void) {

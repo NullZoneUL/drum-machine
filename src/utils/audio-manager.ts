@@ -1,6 +1,6 @@
 export class AudioManager {
   private audioContext: AudioContext;
-  private sound: AudioBuffer;
+  private sound: AudioBuffer | undefined;
 
   constructor(sound: string | File, errorCallback: () => void) {
     this.audioContext = new AudioContext();

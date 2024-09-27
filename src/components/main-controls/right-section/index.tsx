@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useEffect } from 'react';
 import DMSelect from '@elements/select';
 import DMKnob from '@elements/knob';
 import Translation from '@assets/literals/literals';
+import { useCallback, useContext, useEffect } from 'react';
 import { numPages } from '@utils/pages';
 import { publishEvent, CustomEventNames } from '@utils/event';
 import { setNumPages } from '@utils/ticks/tick-system';

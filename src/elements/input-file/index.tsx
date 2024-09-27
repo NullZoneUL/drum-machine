@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './style.scss';
 
 interface InputFileProps {
@@ -14,12 +14,12 @@ const InputFile = ({
   callback,
   className = '',
 }: InputFileProps) => {
-  const inputRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current.addEventListener('change', () => {
-      const files = inputRef.current.files;
-      files.length > 0 && callback(files[0]);
+    inputRef.current?.addEventListener('change', () => {
+      const files = inputRef.current?.files;
+      files && files.length > 0 && callback(files[0]);
     });
   }, []);
 

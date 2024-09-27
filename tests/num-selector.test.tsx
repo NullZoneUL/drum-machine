@@ -1,4 +1,3 @@
-import React from 'react';
 import NumSelector, {
   START_MOUSE_DOWN_TIMEOUT,
   MOUSE_DOWN_TIMEOUT,

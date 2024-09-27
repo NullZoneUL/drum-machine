@@ -1,5 +1,5 @@
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import ButtonRoll from '@elements/button-roll';
+import { useMemo, useCallback, useState, useEffect } from 'react';
 import { TICKS_BY_PAGE } from '@utils/default_values';
 import './style.scss';
 
@@ -19,7 +19,7 @@ const ButtonRollContainer = ({
   selectedInstrument,
 }: ButtonRollContainerProps) => {
   //TODO!!! Implement tests...
-  const [pageTicks, setPageTicks] = useState<Array<boolean>>();
+  const [pageTicks, setPageTicks] = useState<Array<boolean>>([]);
 
   const onButtonRollClicked = useCallback(
     (index: number) => {
@@ -55,7 +55,7 @@ const ButtonRollContainer = ({
   return (
     <div className="buttons-roll-container">
       {instruments.length === 0 || !pageTicks
-        ? [...Array(TICKS_BY_PAGE)].map((x, i) => (
+        ? [...Array(TICKS_BY_PAGE)].map((_, i) => (
             <ButtonRoll
               number={i + 1}
               key={`BUTTON_ROLL_${i}`}

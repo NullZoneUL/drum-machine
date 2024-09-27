@@ -1,4 +1,3 @@
-import React from 'react';
 import DMKnob from '@elements/knob';
 import knob from '@assets/images/knob.webp';
 import { render, screen, fireEvent } from '@testing-library/react';
