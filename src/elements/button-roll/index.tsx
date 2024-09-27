@@ -1,19 +1,18 @@
-import React from 'react';
 import './style.scss';
 
 interface ButtonRollProps {
   number: number;
   selected: boolean;
   playing: boolean;
-  disabled: boolean;
   onClick: (index: number) => void;
+  disabled?: boolean;
 }
 
 const ButtonRoll = ({
   number,
   selected,
   playing,
-  disabled,
+  disabled = false,
   onClick,
 }: ButtonRollProps) => {
   const onClick_ = () => {

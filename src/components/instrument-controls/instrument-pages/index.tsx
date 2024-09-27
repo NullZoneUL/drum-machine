@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
 import NumSelector from '@elements/num-selector';
 import ButtonText from '@elements/button-text';
 import LightDotIndicatorContainer from '@elements/light-dot-indicator';
 import Translation from '@assets/literals/literals';
+import { useCallback, useEffect, useState } from 'react';
 import { MAX_PAGES } from '@utils/default_values';
 import { useTicksPagesListener } from '@hooks/ticks-pages';
 import './style.scss';

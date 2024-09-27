@@ -1,4 +1,3 @@
-import React from 'react';
 import ButtonText from '@elements/button-text';
 import Translation from '@assets/literals/literals';
 import { publishEvent, CustomEventNames } from '@utils/event';

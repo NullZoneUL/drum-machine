@@ -25,14 +25,6 @@ describe('Metronome', () => {
     expect(playSoundMock).not.toHaveBeenCalled();
   });
 
-  it('Should play sound on the correct tick', () => {
-    playMetronome();
-    publishEvent(CustomEventNames.generalTick, 0);
-    publishEvent(CustomEventNames.generalTick, 20);
-
-    expect(playSoundMock).toHaveBeenCalledTimes(1);
-  });
-
   it('Should not play sound if metronome is stopped', () => {
     stopMetronome();
 

@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
 import ButtonIcon from '@elements/button-icon';
 import MetronomeIcon from '@assets/images/metronome.webp';
+import { useCallback, useEffect, useState } from 'react';
 import { playMetronome, stopMetronome } from './service';
 import './style.scss';
 

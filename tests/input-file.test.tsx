@@ -1,4 +1,3 @@
-import React from 'react';
 import InputFile from '@elements/input-file';
 import { render, screen, fireEvent } from '@testing-library/react';
 

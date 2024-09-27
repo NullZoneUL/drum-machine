@@ -1,15 +1,9 @@
-import React, {
-  createContext,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
 import MainControlsContainer from '@components/main-controls';
 import InstrumentControlsContainer from '@components/instrument-controls';
 import ModalService from '@elements/modal-service';
 import SimpleMessageModal from '@elements/modal-service/modals/simple-message';
 import Translation from '@assets/literals/literals';
+import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { InstrumentManager } from '@utils/instrument';
 import { useTicksPagesListener } from '@hooks/ticks-pages';
 import { publishEvent, CustomEventNames } from '@utils/event';

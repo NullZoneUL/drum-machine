@@ -1,4 +1,3 @@
-import React from 'react';
 import ButtonIcon from '@elements/button-icon';
 import MetronomeButton from '@components/metronome';
 import PlayIcon from '@assets/images/play.webp';

@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 import './style.scss';
 
 //TODO!!! Add tests
@@ -17,7 +17,7 @@ const LightDotIndicatorContainer = ({
 
   return (
     <div className="light-dot-container">
-      {[...Array(numLights)].map((x, i) => (
+      {[...Array(numLights)].map((_, i) => (
         <div
           key={`DM_LIGHT_DOT_${id}_${i}`}
           className={`light-dot-item ${selectedPage === i + 1 ? 'light-dot-item-selected' : i >= maxNumPages ? 'light-dot-item-disabled' : ''}`}

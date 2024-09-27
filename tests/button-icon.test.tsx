@@ -1,4 +1,3 @@
-import React from 'react';
 import ButtonIcon from '@elements/button-icon';
 import { render, screen, fireEvent } from '@testing-library/react';
 

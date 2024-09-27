@@ -1,13 +1,7 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
 import InstrumentSelectorContainer from './instrument-selector';
 import ButtonRollContainer from './button-roll-section';
 import InstrumentPagesContainer from './instrument-pages';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import {
   subscribeEvent,
   unsubscribeEvent,

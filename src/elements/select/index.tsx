@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './style.scss';
 
 interface DMSelectItemProps {
@@ -14,21 +14,22 @@ interface DMSelectProps {
 }
 
 const DMSelect = ({ id, items, onChange, className = '' }: DMSelectProps) => {
-  const selectRef = useRef<HTMLSelectElement>();
+  const selectRef = useRef<HTMLSelectElement>(null);
   const defaultValue = useRef(0);
 
   useEffect(() => {
     const selectedIndex = items?.selectedIndex;
     if (
+      typeof selectedIndex === 'number' &&
       defaultValue.current !== selectedIndex &&
       selectedIndex < items?.itemValues?.length &&
       selectedIndex >= 0
     ) {
       defaultValue.current = selectedIndex;
-      selectRef.current.selectedIndex = selectedIndex;
+      selectRef.current!.selectedIndex = selectedIndex;
     }
 
-    onChange(selectRef.current.selectedIndex);
+    onChange(selectRef.current!.selectedIndex);
   }, [items]);
 
   return (

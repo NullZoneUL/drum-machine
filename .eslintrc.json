@@ -15,7 +15,7 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["./tsconfig.json"]
+    "project": ["./tsconfig.json", "./vite.config.ts"]
   },
   "settings": {
     "import/resolver": {
@@ -30,5 +30,8 @@
         "extensions": [".ts", ".js", ".tsx", ".json"]
       }
     }
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off"
   }
 }
