@@ -7,7 +7,19 @@ import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { InstrumentManager } from '@utils/instrument';
 import { useTicksPagesListener } from '@hooks/ticks-pages';
 import { publishEvent, CustomEventNames } from '@utils/event';
+import { invoke } from '@tauri-apps/api/tauri';
 import './style.scss';
+
+const addInstrumentRust = async (instrument: File, ticks: number) => {
+  const arrayBuffer = await instrument.arrayBuffer();
+  const bytes = new Uint8Array(arrayBuffer);
+
+  invoke('add_instrument', {
+    name: instrument.name,
+    content: Array.from(bytes),
+    numTicks: ticks,
+  });
+};
 
 export const InstrumentsContext = createContext<{
   instruments: Instrument[];
@@ -43,6 +55,7 @@ const App = () => {
 
   const addInstrument = useCallback(
     (instrument: File) => {
+      addInstrumentRust(instrument, maxTicksRef.current);
       setInstrument([
         ...instrumentsRef.current,
         {
