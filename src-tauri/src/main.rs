@@ -2,17 +2,23 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod instruments;
+mod utils;
+mod events;
 
-use instruments::{add_instrument, delete_instrument, InstrumentManager};
+use instruments::instruments::{add_instrument, delete_instrument, InstrumentManager};
 use std::sync::Mutex;
+use tokio::runtime::Runtime;
 
 fn main() {
-    tauri::Builder::default()
-        .manage(Mutex::new(InstrumentManager::new()))
-        .invoke_handler(tauri::generate_handler![
-            add_instrument,
-            delete_instrument
-        ])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+    let runtime = Runtime::new().expect("Failed to create Tokio runtime");
+    runtime.block_on(async {
+        tauri::Builder::default()
+            .manage(Mutex::new(InstrumentManager::new()))
+            .invoke_handler(tauri::generate_handler![
+                add_instrument,
+                delete_instrument
+            ])
+            .run(tauri::generate_context!())
+            .expect("error while running tauri application");
+    });
 }

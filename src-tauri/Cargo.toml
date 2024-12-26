@@ -1,11 +1,9 @@
 [package]
 name = "tauri-drum-machine"
 version = "0.1.0"
-description = "A Tauri App"
+description = "Tauri frum machine"
 authors = ["you"]
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
 tauri-build = { version = "1", features = [] }
@@ -13,6 +11,7 @@ tauri-build = { version = "1", features = [] }
 [dependencies]
 tauri = { version = "1", features = ["shell-open"] }
 serde = { version = "1", features = ["derive"] }
+tokio = { version = "1.0", features = ["sync", "full"] }
 serde_json = "1"
 
 [features]

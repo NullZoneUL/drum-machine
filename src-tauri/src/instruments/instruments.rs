@@ -2,6 +2,8 @@ use std::sync::Mutex;
 use tauri::State;
 use serde::Serialize;
 
+use super::instrument_tick_manager::InstrumentTickManager;
+
 #[derive(Debug, Clone, Serialize)]
 pub struct AudioFile {
     pub name: String,
@@ -12,10 +14,21 @@ pub struct AudioFile {
 pub struct Instrument {
     pub file: AudioFile,
     pub num_ticks: u32,
+    pub manager: InstrumentTickManager
 }
 
 pub struct InstrumentManager {
     instruments: Vec<Instrument>,
+}
+
+impl Instrument {
+    fn new(file: AudioFile, num_ticks: u32) -> Self {
+        Self {
+            file,
+            num_ticks,
+            manager: InstrumentTickManager::new(num_ticks)
+        }
+    }
 }
 
 impl InstrumentManager {
@@ -26,7 +39,7 @@ impl InstrumentManager {
     }
 
     pub fn add_instrument(&mut self, file: AudioFile, num_ticks: u32) {
-        self.instruments.push(Instrument { file, num_ticks });
+        self.instruments.push(Instrument::new(file, num_ticks));
     }
 
     pub fn delete_instrument(&mut self, index: usize) -> bool {
