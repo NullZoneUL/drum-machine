@@ -5,6 +5,7 @@ import {
   TICKS_BY_PAGE,
   SUBTICKS_BY_TICK,
 } from '../default_values';
+import { invoke } from '@tauri-apps/api/tauri';
 import { PlayerStates } from '@components/main-controls';
 import { publishEvent, CustomEventNames } from '../event';
 
@@ -38,6 +39,10 @@ export const onPlay = () => {
     timeByTick,
     ticksByLoop,
   });
+  invoke('playing_state', {
+    tickInterval: timeByTick,
+    ticksByLoop,
+  });
 };
 
 export const onPause = () => {
@@ -47,6 +52,7 @@ export const onPause = () => {
     timeByTick,
     ticksByLoop,
   });
+  invoke('paused_state');
 };
 
 export const onStop = () => {
@@ -57,6 +63,7 @@ export const onStop = () => {
     timeByTick,
     ticksByLoop,
   });
+  invoke('stopped_state');
 };
 
 const getTimeByTick = () => {
