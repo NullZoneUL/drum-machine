@@ -1,7 +1,8 @@
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use tauri::State;
 use serde::Serialize;
-
+use tauri::async_runtime::Mutex as AsyncMutex;
+use crate::events::event_emitter::EventEmitter;
 use super::instrument_tick_manager::InstrumentTickManager;
 
 #[derive(Debug, Clone, Serialize)]
@@ -22,11 +23,11 @@ pub struct InstrumentManager {
 }
 
 impl Instrument {
-    fn new(file: AudioFile, num_ticks: u32) -> Self {
+    async fn new(file: AudioFile, num_ticks: u32, emitter: Arc<AsyncMutex<EventEmitter>>) -> Self {
         Self {
             file,
             num_ticks,
-            manager: InstrumentTickManager::new(num_ticks)
+            manager: InstrumentTickManager::new(num_ticks, emitter).await
         }
     }
 }
@@ -38,8 +39,9 @@ impl InstrumentManager {
         }
     }
 
-    pub fn add_instrument(&mut self, file: AudioFile, num_ticks: u32) {
-        self.instruments.push(Instrument::new(file, num_ticks));
+    pub async fn add_instrument(&mut self, file: AudioFile, num_ticks: u32, emitter: Arc<AsyncMutex<EventEmitter>>) {
+        let instrument = Instrument::new(file, num_ticks, emitter).await;
+        self.instruments.push(instrument);
     }
 
     pub fn delete_instrument(&mut self, index: usize) -> bool {
@@ -57,14 +59,17 @@ impl InstrumentManager {
 }
 
 #[tauri::command]
-pub fn add_instrument(
-    state: State<'_, Mutex<InstrumentManager>>,
+pub async fn add_instrument(
+    state: State<'_, AsyncMutex<InstrumentManager>>,
+    emitter: tauri::State<'_, Arc<AsyncMutex<EventEmitter>>>,
     name: String,
     content: Vec<u8>,
     num_ticks: u32,
-) {
-    let mut manager = state.lock().unwrap();
-    manager.add_instrument(AudioFile {name, content}, num_ticks);
+) -> Result<(), String> {
+    let emitter_instance = Arc::clone(&emitter);
+    let mut manager = state.lock().await;
+    manager.add_instrument(AudioFile {name, content}, num_ticks, emitter_instance).await;
+    Ok(())
 }
 
 #[tauri::command]

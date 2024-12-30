@@ -2,6 +2,8 @@ use std::sync::{Arc, Mutex};
 use std::time::Duration;
 use tauri::async_runtime::{spawn, JoinHandle};
 use tokio::time::interval;
+use tauri::async_runtime::Mutex as AsyncMutex;
+use crate::events::event_emitter::EventEmitter;
 use crate::events::events::EventList::{GeneralTick, SystemTick};
 
 const SUBTICKS_BY_TICK: u8 = 5;
@@ -13,7 +15,12 @@ pub struct TickWorker {
 }
 
 #[tauri::command]
-pub async fn playing_state(state: tauri::State<'_, Arc<Mutex<TickWorker>>>, tick_interval: f64, ticks_by_loop: u16) -> Result<(), String> {
+pub async fn playing_state(
+    state: tauri::State<'_, Arc<Mutex<TickWorker>>>,
+    emitter: tauri::State<'_, Arc<AsyncMutex<EventEmitter>>>,
+    tick_interval: f64,
+    ticks_by_loop: u16
+) -> Result<(), String> {
     let mut tick_worker_state = state.lock().unwrap();
     
     // If there is an interval currently running, don't play a new one
@@ -22,24 +29,24 @@ pub async fn playing_state(state: tauri::State<'_, Arc<Mutex<TickWorker>>>, tick
     }
 
     let tick = Arc::clone(&state);
+    let emitter_instance = Arc::clone(&emitter);
     let handle = spawn(async move {
         let mut interval = interval(Duration::from_secs_f64(tick_interval / 1000.0));
+        let emitter_final = emitter_instance.lock().await;
         loop {
             interval.tick().await;
             let mut tick_worker_state = tick.lock().unwrap();
+            let tick_str = tick_worker_state.tick.to_string();
 
             if tick_worker_state.tick % SUBTICKS_BY_TICK as u32 == 0 {
                 if tick_worker_state.tick >= ticks_by_loop.into() {
                     tick_worker_state.tick = 0;
                 }
-                println!("{} tick! {}", GeneralTick.as_str(), tick_worker_state.tick);
-                /*self.postMessage({
-                  type: 'generalTick',
-                  number: tickNumber,
-                  play: true,
-                });*/
+
+                emitter_final.emit(GeneralTick.as_str(), tick_str.clone());
             }
-            //self.postMessage({ type: 'systemTick', number: tickNumber });
+
+            emitter_final.emit(SystemTick.as_str(), tick_str.clone());
             tick_worker_state.tick += 1;
         }
     });
