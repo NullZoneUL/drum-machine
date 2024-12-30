@@ -8,7 +8,7 @@ mod ticks;
 
 use instruments::instruments::{add_instrument, delete_instrument, InstrumentManager};
 use ticks::tick_worker::{playing_state, paused_state, stopped_state, TickWorker};
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use tokio::runtime::Runtime;
 
 fn main() {
@@ -16,7 +16,7 @@ fn main() {
     runtime.block_on(async {
         tauri::Builder::default()
             .manage(Mutex::new(InstrumentManager::new()))
-            .manage(Mutex::new(TickWorker::new()))
+            .manage(Arc::new(Mutex::new(TickWorker::default())))
             .invoke_handler(tauri::generate_handler![
                 add_instrument,
                 delete_instrument,

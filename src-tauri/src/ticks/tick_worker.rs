@@ -1,89 +1,67 @@
 use std::sync::{Arc, Mutex};
-use std::time::{Duration, Instant};
-use std::thread;
+use std::time::Duration;
+use tauri::async_runtime::{spawn, JoinHandle};
+use tokio::time::interval;
 use crate::events::events::EventList::{GeneralTick, SystemTick};
 
 const SUBTICKS_BY_TICK: u8 = 5;
 
+#[derive(Default)]
 pub struct TickWorker {
-    tick_number: u32,
-    tick_interval: f64,
-    is_running: Arc<Mutex<bool>>
+    tick: u32,
+    interval_handle: Option<JoinHandle<()>>,
 }
 
-impl TickWorker {
-    pub fn new() -> Self {
-        Self {
-            tick_number: 0,
-            tick_interval: 0_f64,
-            is_running: Arc::new(Mutex::new(false))
-        }
+#[tauri::command]
+pub async fn playing_state(state: tauri::State<'_, Arc<Mutex<TickWorker>>>, tick_interval: f64, ticks_by_loop: u16) -> Result<(), String> {
+    let mut tick_worker_state = state.lock().unwrap();
+    
+    // If there is an interval currently running, don't play a new one
+    if tick_worker_state.interval_handle.is_some() {
+        return Ok(());
     }
 
-    fn playing(&mut self, tick_interval: f64, ticks_by_loop: u16) {
-        self.tick_interval = tick_interval;
+    let tick = Arc::clone(&state);
+    let handle = spawn(async move {
+        let mut interval = interval(Duration::from_secs_f64(tick_interval / 1000.0));
+        loop {
+            interval.tick().await;
+            let mut tick_worker_state = tick.lock().unwrap();
 
-        let is_running = Arc::clone(&self.is_running);
-        *is_running.lock().unwrap() = true;
-
-        let is_running_clone = Arc::clone(&is_running);
-
-        thread::spawn(move || {
-            let interval = Duration::from_secs_f64(tick_interval / 1000.0);
-            let mut next_tick = Instant::now() + interval;
-
-            while *is_running_clone.lock().unwrap() {
-                //TODO!!! Resolve 'self' issue here
-                /*if self.tick_number % SUBTICKS_BY_TICK as u32 == 0 {
-                    if self.tick_number >= ticks_by_loop.into() {
-                        self.tick_number = 0;
-                    }
-                    println!("{} tick! {}", GeneralTick.as_str(), self.tick_number);
-                    /*self.postMessage({
-                      type: 'generalTick',
-                      number: tickNumber,
-                      play: true,
-                    });*/
+            if tick_worker_state.tick % SUBTICKS_BY_TICK as u32 == 0 {
+                if tick_worker_state.tick >= ticks_by_loop.into() {
+                    tick_worker_state.tick = 0;
                 }
-                //self.postMessage({ type: 'systemTick', number: tickNumber });*/
-        
-                //self.tick_number += 1;
-
-                // Calculate the time untile the next call
-                let now = Instant::now();
-                if now < next_tick {
-                    thread::sleep(next_tick - now);
-                }
-                next_tick += interval;
+                println!("{} tick! {}", GeneralTick.as_str(), tick_worker_state.tick);
+                /*self.postMessage({
+                  type: 'generalTick',
+                  number: tickNumber,
+                  play: true,
+                });*/
             }
-        });
-        println!("Playing!!! {} {}", tick_interval, ticks_by_loop);
-    }
+            //self.postMessage({ type: 'systemTick', number: tickNumber });
+            tick_worker_state.tick += 1;
+        }
+    });
 
-    fn paused(&mut self) {
-        *self.is_running.lock().unwrap() = false;
-        println!("Paused!!!");
-    }
-
-    fn stopped(&self) {
-        println!("Stopped!!!");
-    }
+    tick_worker_state.interval_handle = Some(handle);
+    Ok(())
 }
 
 #[tauri::command]
-pub fn playing_state(state: tauri::State<'_, Mutex<TickWorker>>, tick_interval: f64, ticks_by_loop: u16) {
-    let mut worker = state.lock().unwrap();
-    worker.playing(tick_interval, ticks_by_loop);
+pub async fn paused_state(state: tauri::State<'_, Arc<Mutex<TickWorker>>>) -> Result<(), String> {
+    let mut tick_worker_state = state.lock().unwrap();
+    if let Some(handle) = tick_worker_state.interval_handle.take() {
+        handle.abort();
+    }
+    Ok(())
 }
 
 #[tauri::command]
-pub fn paused_state(state: tauri::State<'_, Mutex<TickWorker>>) {
-    let mut worker = state.lock().unwrap();
-    worker.paused();
-}
-
-#[tauri::command]
-pub fn stopped_state(state: tauri::State<'_, Mutex<TickWorker>>) {
-    let worker = state.lock().unwrap();
-    worker.stopped();
+pub async fn stopped_state(state: tauri::State<'_, Arc<Mutex<TickWorker>>>) -> Result<(), String> {
+    let _ = paused_state(state.clone()).await;
+    let mut tick_worker_state = state.lock().unwrap();
+    tick_worker_state.tick = 0;
+    println!("Tick reset to 0");
+    Ok(())
 }
