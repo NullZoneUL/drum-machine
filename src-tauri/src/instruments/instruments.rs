@@ -24,10 +24,13 @@ pub struct InstrumentManager {
 
 impl Instrument {
     async fn new(file: AudioFile, num_ticks: u32, emitter: Arc<AsyncMutex<EventEmitter>>) -> Self {
+        let manager = InstrumentTickManager::new(num_ticks, emitter).await;
+        let manager_instance = manager.lock().await.clone();
+
         Self {
             file,
             num_ticks,
-            manager: InstrumentTickManager::new(num_ticks, emitter).await
+            manager: manager_instance
         }
     }
 }
