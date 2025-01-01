@@ -40,10 +40,6 @@ impl InstrumentTickManager {
         });
     }
 
-    fn set_new_max_num_ticks(&mut self, num_ticks: u32) {
-        self.max_num_ticks = (num_ticks + 1) * (SUBTICKS_BY_TICK as u32) - 1;
-    }
-
     fn tick_listener(&mut self, tick_number: u32) {
         if tick_number == 0 || self.tick >= self.max_num_ticks {
             self.tick = 0;
@@ -55,6 +51,17 @@ impl InstrumentTickManager {
             println!("Todo!! Play sound");
         }
     }
+
+    pub fn set_new_max_num_ticks(&mut self, num_ticks: u32) {
+        self.max_num_ticks = (num_ticks + 1) * (SUBTICKS_BY_TICK as u32) - 1;
+    }
+
+    pub fn update_tick_position(&mut self, index: usize) {
+        let actual_value = self.general_tick_positions[index];
+        self.general_tick_positions[index] = !actual_value;
+        self.tick_positions[index * SUBTICKS_BY_TICK as usize] = !actual_value;
+    }
+
 }
 
 fn create_new_tick_positions_map (max_ticks: u32) -> Vec<bool> {

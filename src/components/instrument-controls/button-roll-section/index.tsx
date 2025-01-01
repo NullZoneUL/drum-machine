@@ -1,5 +1,6 @@
 import ButtonRoll from '@elements/button-roll';
 import { useMemo, useCallback, useState, useEffect } from 'react';
+import { invoke } from '@tauri-apps/api';
 import { TICKS_BY_PAGE } from '@utils/default_values';
 import './style.scss';
 
@@ -18,14 +19,18 @@ const ButtonRollContainer = ({
   instruments,
   selectedInstrument,
 }: ButtonRollContainerProps) => {
-  //TODO!!! Implement tests...
   const [pageTicks, setPageTicks] = useState<Array<boolean>>([]);
 
   const onButtonRollClicked = useCallback(
     (index: number) => {
-      const newValue = instruments[
-        selectedInstrument
-      ]?.manager.updateTickPosition(index + (selectedPage - 1) * TICKS_BY_PAGE);
+      const position = index + (selectedPage - 1) * TICKS_BY_PAGE;
+      invoke('on_button_roll_clicked', {
+        index: position,
+        instrumentIndex: selectedInstrument,
+      });
+
+      const newValue =
+        instruments[selectedInstrument]?.manager.updateTickPosition(position);
       newValue !== null &&
         setPageTicks(pageTicks => {
           const newPageTicks = [...pageTicks];

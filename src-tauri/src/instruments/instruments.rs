@@ -76,9 +76,24 @@ pub async fn add_instrument(
 }
 
 #[tauri::command]
-pub fn delete_instrument(state: State<'_, Mutex<InstrumentManager>>, index: usize) {
-    let mut manager = state.lock().unwrap();
+pub async fn delete_instrument(
+    state: State<'_, AsyncMutex<InstrumentManager>>,
+    index: usize
+) -> Result<(), String> {
+    let mut manager = state.lock().await;
     manager.delete_instrument(index);
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn on_button_roll_clicked(
+    state: State<'_, AsyncMutex<InstrumentManager>>,
+    instrument_index: usize,
+    index: usize
+) -> Result<(), String> {
+    let mut manager = state.lock().await;
+    manager.instruments[instrument_index].manager.update_tick_position(index);
+    Ok(())
 }
 
 pub fn get_instruments(state: State<'_, Mutex<InstrumentManager>>) -> Vec<Instrument> {

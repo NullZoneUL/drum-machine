@@ -6,7 +6,7 @@ mod utils;
 mod events;
 mod ticks;
 
-use instruments::instruments::{add_instrument, delete_instrument, InstrumentManager};
+use instruments::instruments::{add_instrument, delete_instrument, on_button_roll_clicked, InstrumentManager};
 use ticks::tick_worker::{playing_state, paused_state, stopped_state, TickWorker};
 use events::event_emitter::EventEmitter;
 use std::sync::{Arc, Mutex};
@@ -25,7 +25,8 @@ fn main() {
                 delete_instrument,
                 playing_state,
                 paused_state,
-                stopped_state
+                stopped_state,
+                on_button_roll_clicked
             ])
             .run(tauri::generate_context!())
             .expect("error while running tauri application");
