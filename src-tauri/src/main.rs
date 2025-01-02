@@ -8,6 +8,7 @@ mod ticks;
 
 use instruments::instruments::{add_instrument, delete_instrument, on_button_roll_clicked, set_new_max_num_ticks, InstrumentManager};
 use ticks::tick_worker::{playing_state, paused_state, stopped_state, TickWorker};
+use ticks::js_tick_sender::send_general_tick_event;
 use events::event_emitter::EventEmitter;
 use std::sync::{Arc, Mutex};
 use tokio::runtime::Runtime;
@@ -27,7 +28,8 @@ fn main() {
                 paused_state,
                 stopped_state,
                 on_button_roll_clicked,
-                set_new_max_num_ticks
+                set_new_max_num_ticks,
+                send_general_tick_event
             ])
             .run(tauri::generate_context!())
             .expect("error while running tauri application");

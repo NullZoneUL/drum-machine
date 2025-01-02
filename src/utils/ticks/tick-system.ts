@@ -6,6 +6,7 @@ import {
   SUBTICKS_BY_TICK,
 } from '../default_values';
 import { invoke } from '@tauri-apps/api/tauri';
+import { listen } from '@tauri-apps/api/event';
 import { PlayerStates } from '@components/main-controls';
 import { publishEvent, CustomEventNames } from '../event';
 
@@ -84,17 +85,28 @@ tickWorker.onmessage = (
 ) => {
   const eventData = event.data;
   switch (eventData.type) {
-    case 'generalTick':
+    /*case 'generalTick': // TODO!!! Delete this part once tick-worker.ts is completely removed
       publishEvent(CustomEventNames.generalTick, {
         tick: eventData.number,
         play: eventData.play,
       });
-      break;
+      break;*/
     case 'systemTick':
       publishEvent(CustomEventNames.systemTick, eventData.number);
       break;
   }
 };
+
+listen(
+  'general-tick-event',
+  (event: { payload: { tick: number; play: boolean } }) => {
+    const { tick, play } = event.payload;
+    publishEvent(CustomEventNames.generalTick, {
+      tick,
+      play,
+    });
+  },
+);
 
 timeByTick = getTimeByTick();
 ticksByLoop = getTicksByLoop();

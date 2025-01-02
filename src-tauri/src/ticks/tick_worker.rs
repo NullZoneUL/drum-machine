@@ -5,6 +5,7 @@ use tokio::time::interval;
 use tauri::async_runtime::Mutex as AsyncMutex;
 use crate::events::event_emitter::EventEmitter;
 use crate::events::events::EventList::{GeneralTick, SystemTick};
+use crate::ticks::js_tick_sender::send_general_tick_event;
 
 const SUBTICKS_BY_TICK: u8 = 5;
 
@@ -18,6 +19,7 @@ pub struct TickWorker {
 pub async fn playing_state(
     state: tauri::State<'_, Arc<Mutex<TickWorker>>>,
     emitter: tauri::State<'_, Arc<AsyncMutex<EventEmitter>>>,
+    app_handle: tauri::AppHandle,
     tick_interval: f64,
     ticks_by_loop: u16
 ) -> Result<(), String> {
@@ -30,6 +32,8 @@ pub async fn playing_state(
 
     let tick = Arc::clone(&state);
     let emitter_instance = Arc::clone(&emitter);
+    let app_handle_clone = app_handle.clone();
+
     let handle = spawn(async move {
         let mut interval = interval(Duration::from_secs_f64(tick_interval / 1000.0));
         let emitter_final = emitter_instance.lock().await;
@@ -44,6 +48,7 @@ pub async fn playing_state(
                 }
 
                 emitter_final.emit(GeneralTick.as_str(), tick_str.clone());
+                send_general_tick_event(app_handle_clone.clone(), tick_worker_state.tick, true);
             }
 
             emitter_final.emit(SystemTick.as_str(), tick_str.clone());
@@ -65,10 +70,15 @@ pub async fn paused_state(state: tauri::State<'_, Arc<Mutex<TickWorker>>>) -> Re
 }
 
 #[tauri::command]
-pub async fn stopped_state(state: tauri::State<'_, Arc<Mutex<TickWorker>>>) -> Result<(), String> {
+pub async fn stopped_state(
+    state: tauri::State<'_, Arc<Mutex<TickWorker>>>,
+    app_handle: tauri::AppHandle
+) -> Result<(), String> {
     let _ = paused_state(state.clone()).await;
+    let app_handle_clone = app_handle.clone();
     let mut tick_worker_state = state.lock().unwrap();
     tick_worker_state.tick = 0;
+    send_general_tick_event(app_handle_clone.clone(), 0, false);
     println!("Tick reset to 0");
     Ok(())
 }
