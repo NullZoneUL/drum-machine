@@ -23,6 +23,7 @@ pub async fn playing_state(
     tick_interval: f64,
     ticks_by_loop: u16
 ) -> Result<(), String> {
+    let _ = paused_state(state.clone()).await;
     let mut tick_worker_state = state.lock().unwrap();
     
     // If there is an interval currently running, don't play a new one

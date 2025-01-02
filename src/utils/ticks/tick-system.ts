@@ -33,7 +33,7 @@ export const setNumPages = (num: number) => {
 };
 
 export const onPlay = () => {
-  onPause();
+  onPause(true);
   playerState = PlayerStates.PLAYING;
   tickWorker.postMessage({
     action: playerState,
@@ -46,18 +46,18 @@ export const onPlay = () => {
   });
 };
 
-export const onPause = () => {
+export const onPause = (skipRustCall = false) => {
   playerState = PlayerStates.PAUSED;
   tickWorker.postMessage({
     action: playerState,
     timeByTick,
     ticksByLoop,
   });
-  invoke('paused_state');
+  !skipRustCall && invoke('paused_state');
 };
 
 export const onStop = () => {
-  onPause();
+  onPause(true);
   playerState = PlayerStates.STOPPED;
   tickWorker.postMessage({
     action: playerState,

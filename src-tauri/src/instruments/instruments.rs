@@ -99,7 +99,9 @@ pub async fn set_new_max_num_ticks(
     max_ticks: usize
 ) -> Result<(), String> {
     let manager = state.lock().await;
-    manager.instruments[instrument_index].manager.lock().await.set_new_max_num_ticks(max_ticks);
+    if manager.instruments.len() > instrument_index {
+        manager.instruments[instrument_index].manager.lock().await.set_new_max_num_ticks(max_ticks);
+    }
     Ok(())
 }
 
