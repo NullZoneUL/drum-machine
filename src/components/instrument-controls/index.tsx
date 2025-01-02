@@ -2,6 +2,7 @@ import InstrumentSelectorContainer from './instrument-selector';
 import ButtonRollContainer from './button-roll-section';
 import InstrumentPagesContainer from './instrument-pages';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { invoke } from '@tauri-apps/api';
 import {
   subscribeEvent,
   unsubscribeEvent,
@@ -33,7 +34,11 @@ const InstrumentControlsContainer = () => {
     const selectedInstrument_ = instruments[selectedInstrument];
     if (selectedInstrument_) {
       selectedInstrument_.numTicks = limitTicks;
-      selectedInstrument_.manager.setNewMaxNumTicks(limitTicks);
+      selectedInstrument_.manager.setNewMaxNumTicks(limitTicks); //TODO!! Remove this line
+      invoke('set_new_max_num_ticks', {
+        instrumentIndex: selectedInstrument,
+        maxTicks: limitTicks,
+      });
     }
   }, [limitTicks]);
 

@@ -2,6 +2,7 @@ import DMSelect from '@elements/select';
 import DMKnob from '@elements/knob';
 import Translation from '@assets/literals/literals';
 import { useCallback, useContext, useEffect } from 'react';
+import { invoke } from '@tauri-apps/api';
 import { numPages } from '@utils/pages';
 import { publishEvent, CustomEventNames } from '@utils/event';
 import { setNumPages } from '@utils/ticks/tick-system';
@@ -21,10 +22,14 @@ const MainControlsRightSection = () => {
 
   useEffect(() => {
     const mxTicksBy0 = maxTicksValue - 1;
-    instruments.forEach(item => {
+    instruments.forEach((item, index) => {
       if (item.numTicks > mxTicksBy0) {
         item.numTicks = mxTicksBy0;
-        item.manager.setNewMaxNumTicks(mxTicksBy0);
+        item.manager.setNewMaxNumTicks(mxTicksBy0); //TODO!! Remove this line
+        invoke('set_new_max_num_ticks', {
+          instrumentIndex: index,
+          maxTicks: mxTicksBy0,
+        });
       }
     });
   }, [maxTicksValue]);

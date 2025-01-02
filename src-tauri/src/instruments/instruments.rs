@@ -13,7 +13,6 @@ pub struct AudioFile {
 #[derive(Debug, Clone)]
 pub struct Instrument {
     pub file: AudioFile,
-    pub num_ticks: usize,
     pub manager: Arc<AsyncMutex<InstrumentTickManager>>
 }
 
@@ -27,7 +26,6 @@ impl Instrument {
 
         Self {
             file,
-            num_ticks,
             manager
         }
     }
@@ -91,6 +89,17 @@ pub async fn on_button_roll_clicked(
 ) -> Result<(), String> {
     let manager = state.lock().await;
     manager.instruments[instrument_index].manager.lock().await.update_tick_position(index);
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn set_new_max_num_ticks(
+    state: State<'_, AsyncMutex<InstrumentManager>>,
+    instrument_index: usize,
+    max_ticks: usize
+) -> Result<(), String> {
+    let manager = state.lock().await;
+    manager.instruments[instrument_index].manager.lock().await.set_new_max_num_ticks(max_ticks);
     Ok(())
 }
 
