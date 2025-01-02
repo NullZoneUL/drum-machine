@@ -1,21 +1,20 @@
 use std::sync::{Arc, Mutex};
 use tauri::State;
-use serde::Serialize;
 use tauri::async_runtime::Mutex as AsyncMutex;
 use crate::events::event_emitter::EventEmitter;
 use super::instrument_tick_manager::InstrumentTickManager;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone)]
 pub struct AudioFile {
     pub name: String,
     pub content: Vec<u8>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone)]
 pub struct Instrument {
     pub file: AudioFile,
-    pub num_ticks: u32,
-    pub manager: InstrumentTickManager
+    pub num_ticks: usize,
+    pub manager: Arc<AsyncMutex<InstrumentTickManager>>
 }
 
 pub struct InstrumentManager {
@@ -23,14 +22,13 @@ pub struct InstrumentManager {
 }
 
 impl Instrument {
-    async fn new(file: AudioFile, num_ticks: u32, emitter: Arc<AsyncMutex<EventEmitter>>) -> Self {
+    async fn new(file: AudioFile, num_ticks: usize, emitter: Arc<AsyncMutex<EventEmitter>>) -> Self {
         let manager = InstrumentTickManager::new(num_ticks, emitter).await;
-        let manager_instance = manager.lock().await.clone();
 
         Self {
             file,
             num_ticks,
-            manager: manager_instance
+            manager
         }
     }
 }
@@ -42,7 +40,7 @@ impl InstrumentManager {
         }
     }
 
-    pub async fn add_instrument(&mut self, file: AudioFile, num_ticks: u32, emitter: Arc<AsyncMutex<EventEmitter>>) {
+    pub async fn add_instrument(&mut self, file: AudioFile, num_ticks: usize, emitter: Arc<AsyncMutex<EventEmitter>>) {
         let instrument = Instrument::new(file, num_ticks, emitter).await;
         self.instruments.push(instrument);
     }
@@ -67,7 +65,7 @@ pub async fn add_instrument(
     emitter: tauri::State<'_, Arc<AsyncMutex<EventEmitter>>>,
     name: String,
     content: Vec<u8>,
-    num_ticks: u32,
+    num_ticks: usize,
 ) -> Result<(), String> {
     let emitter_instance = Arc::clone(&emitter);
     let mut manager = state.lock().await;
@@ -91,8 +89,8 @@ pub async fn on_button_roll_clicked(
     instrument_index: usize,
     index: usize
 ) -> Result<(), String> {
-    let mut manager = state.lock().await;
-    manager.instruments[instrument_index].manager.update_tick_position(index);
+    let manager = state.lock().await;
+    manager.instruments[instrument_index].manager.lock().await.update_tick_position(index);
     Ok(())
 }
 

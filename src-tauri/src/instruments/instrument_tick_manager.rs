@@ -10,12 +10,12 @@ use crate::utils::default_values::{SYSTEM_MAX_TICKS, GENERAL_MAX_TICKS, SUBTICKS
 pub struct InstrumentTickManager {
     tick_positions: Vec<bool>,
     general_tick_positions: Vec<bool>,
-    max_num_ticks: u32,
-    tick: u32
+    max_num_ticks: usize,
+    tick: usize
 }
 
 impl InstrumentTickManager {
-    pub async fn new(num_ticks: u32, emitter: Arc<AsyncMutex<EventEmitter>>) -> Arc<AsyncMutex<Self>> {
+    pub async fn new(num_ticks: usize, emitter: Arc<AsyncMutex<EventEmitter>>) -> Arc<AsyncMutex<Self>> {
         let manager = Arc::new(AsyncMutex::new(Self {
             tick_positions: create_new_tick_positions_map(SYSTEM_MAX_TICKS),
             general_tick_positions: create_new_tick_positions_map(GENERAL_MAX_TICKS),
@@ -23,7 +23,8 @@ impl InstrumentTickManager {
             tick: 0
         }));
 
-        manager.lock().await.register_listeners(emitter, manager.clone()).await;
+        let cloned_manager = manager.clone();
+        manager.lock().await.register_listeners(emitter, cloned_manager).await;
         manager.lock().await.set_new_max_num_ticks(num_ticks);
 
         manager
@@ -34,26 +35,28 @@ impl InstrumentTickManager {
 
         task::spawn(async move {
             while let Ok(payload) = system_tick_listener.recv().await {
-                let mut manager = manager.lock().await;
-                manager.tick_listener(payload.parse::<u32>().unwrap());
+                if let Ok(tick_number) = payload.parse::<usize>() {
+                    let cloned_manager = manager.clone();
+                    cloned_manager.lock().await.tick_listener(tick_number).await;
+                }
             }
         });
     }
 
-    fn tick_listener(&mut self, tick_number: u32) {
+    async fn tick_listener(&mut self, tick_number: usize) {
         if tick_number == 0 || self.tick >= self.max_num_ticks {
             self.tick = 0;
         } else {
             self.tick += 1;
         }
 
-        if self.tick_positions[self.tick as usize] == true {
+        if self.tick_positions[self.tick] {
             println!("Todo!! Play sound");
         }
     }
 
-    pub fn set_new_max_num_ticks(&mut self, num_ticks: u32) {
-        self.max_num_ticks = (num_ticks + 1) * (SUBTICKS_BY_TICK as u32) - 1;
+    pub fn set_new_max_num_ticks(&mut self, num_ticks: usize) {
+        self.max_num_ticks = (num_ticks + 1) * (SUBTICKS_BY_TICK as usize) - 1;
     }
 
     pub fn update_tick_position(&mut self, index: usize) {
