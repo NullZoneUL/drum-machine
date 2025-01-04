@@ -1,26 +1,28 @@
 use std::sync::Arc;
-use serde::Serialize;
 use tokio::task;
 use tauri::async_runtime::Mutex as AsyncMutex;
 use crate::events::event_emitter::EventEmitter;
 use crate::events::events::EventList::SystemTick;
 use crate::utils::default_values::{SYSTEM_MAX_TICKS, GENERAL_MAX_TICKS, SUBTICKS_BY_TICK};
+use super::audio_file::AudioFile;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone)]
 pub struct InstrumentTickManager {
     tick_positions: Vec<bool>,
     general_tick_positions: Vec<bool>,
     max_num_ticks: usize,
-    tick: usize
+    tick: usize,
+    file: AudioFile,
 }
 
 impl InstrumentTickManager {
-    pub async fn new(num_ticks: usize, emitter: Arc<AsyncMutex<EventEmitter>>) -> Arc<AsyncMutex<Self>> {
+    pub async fn new(num_ticks: usize, file: AudioFile, emitter: Arc<AsyncMutex<EventEmitter>>) -> Arc<AsyncMutex<Self>> {
         let manager = Arc::new(AsyncMutex::new(Self {
             tick_positions: create_new_tick_positions_map(SYSTEM_MAX_TICKS),
             general_tick_positions: create_new_tick_positions_map(GENERAL_MAX_TICKS),
             max_num_ticks: 0,
-            tick: 0
+            tick: 0,
+            file
         }));
 
         let cloned_manager = manager.clone();

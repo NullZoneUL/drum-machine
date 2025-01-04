@@ -1,34 +1,12 @@
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 use tauri::State;
 use tauri::async_runtime::Mutex as AsyncMutex;
 use crate::events::event_emitter::EventEmitter;
 use super::instrument_tick_manager::InstrumentTickManager;
-
-#[derive(Debug, Clone)]
-pub struct AudioFile {
-    pub name: String,
-    pub content: Vec<u8>,
-}
-
-#[derive(Debug, Clone)]
-pub struct Instrument {
-    pub file: AudioFile,
-    pub manager: Arc<AsyncMutex<InstrumentTickManager>>
-}
+use super::audio_file::AudioFile;
 
 pub struct InstrumentManager {
-    instruments: Vec<Instrument>,
-}
-
-impl Instrument {
-    async fn new(file: AudioFile, num_ticks: usize, emitter: Arc<AsyncMutex<EventEmitter>>) -> Self {
-        let manager = InstrumentTickManager::new(num_ticks, emitter).await;
-
-        Self {
-            file,
-            manager
-        }
-    }
+    instruments: Vec<Arc<AsyncMutex<InstrumentTickManager>>>,
 }
 
 impl InstrumentManager {
@@ -39,7 +17,7 @@ impl InstrumentManager {
     }
 
     pub async fn add_instrument(&mut self, file: AudioFile, num_ticks: usize, emitter: Arc<AsyncMutex<EventEmitter>>) {
-        let instrument = Instrument::new(file, num_ticks, emitter).await;
+        let instrument = InstrumentTickManager::new(num_ticks, file, emitter).await;
         self.instruments.push(instrument);
     }
 
@@ -50,10 +28,6 @@ impl InstrumentManager {
         } else {
             false
         }
-    }
-
-    pub fn get_instruments(&self) -> Vec<Instrument> {
-        self.instruments.clone()
     }
 }
 
@@ -88,7 +62,7 @@ pub async fn on_button_roll_clicked(
     index: usize
 ) -> Result<(), String> {
     let manager = state.lock().await;
-    manager.instruments[instrument_index].manager.lock().await.update_tick_position(index);
+    manager.instruments[instrument_index].lock().await.update_tick_position(index);
     Ok(())
 }
 
@@ -100,12 +74,7 @@ pub async fn set_new_max_num_ticks(
 ) -> Result<(), String> {
     let manager = state.lock().await;
     if manager.instruments.len() > instrument_index {
-        manager.instruments[instrument_index].manager.lock().await.set_new_max_num_ticks(max_ticks);
+        manager.instruments[instrument_index].lock().await.set_new_max_num_ticks(max_ticks);
     }
     Ok(())
-}
-
-pub fn get_instruments(state: State<'_, Mutex<InstrumentManager>>) -> Vec<Instrument> {
-    let manager = state.lock().unwrap();
-    manager.get_instruments()
 }
